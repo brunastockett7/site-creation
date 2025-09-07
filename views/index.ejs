@@ -2,24 +2,31 @@
 <html lang="en">
   <%- include('partials/head', { title, description }) %>
   <body>
-    <a class="skip-link" href="#main">Skip to content</a>
-
     <%- include('partials/header') %>
-    <%- include('partials/nav') %>
 
     <main id="main" class="container">
-      <!-- Hero -->
-      <section class="hero">
-        <div class="hero-text">
-          <h1>Your next car, made simple.</h1>
-          <p class="lead">Shop, finance, and service—all in one place with transparent pricing.</p>
-          <a class="btn" href="#inventory">Browse Inventory</a>
-          <a class="btn btn-outline" href="#finance">Get Pre-Approved</a>
+      <!-- HERO SLIDER -->
+      <section class="hero-slider" aria-label="Featured vehicles">
+        <div class="slides" id="slides">
+          <!-- Use the images you already have in /public/images -->
+          <div class="slide">
+            <img src="/images/hero.webp" alt="Showroom hero vehicle">
+          </div>
+          <div class="slide">
+            <img src="/images/suv.webp" alt="SUV models in lineup">
+          </div>
+          <div class="slide">
+            <img src="/images/sedan.webp" alt="Sedan models in lineup">
+          </div>
+          <div class="slide">
+            <img src="/images/truck.webp" alt="Truck models in lineup">
+          </div>
         </div>
-        <img class="hero-img" src="/images/hero.webp" alt="CSE Motors showroom with a sleek car">
+        <!-- pagination dots (no buttons) -->
+        <div class="dots" id="dots" aria-hidden="true"></div>
       </section>
 
-      <!-- Features -->
+      <!-- FEATURES / CATEGORIES (kept as before) -->
       <section id="inventory" class="features" aria-labelledby="inv-heading">
         <h2 id="inv-heading" class="section-title">Popular categories</h2>
         <div class="grid">
@@ -46,7 +53,6 @@
         </div>
       </section>
 
-      <!-- CTA -->
       <section id="finance" class="cta">
         <div class="cta-inner">
           <h2 class="section-title">No-pressure test drives</h2>
@@ -54,6 +60,8 @@
           <a class="btn" href="#">Book now</a>
         </div>
       </section>
+
+      <div id="service"></div>
     </main>
 
     <%- include('partials/footer') %>

@@ -1,32 +1,44 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Mobile nav toggle (class-based so CSS controls layout)
-  const toggle = document.querySelector(".nav-toggle");
-  const nav = document.getElementById("primary-nav");
+  // ----- Simple auto slider -----
+  const track = document.getElementById("slides");
+  if (track) {
+    const slides = Array.from(track.children);
+    let index = 0;
 
-  if (toggle && nav) {
-    const setOpen = (open) => {
-      toggle.setAttribute("aria-expanded", String(open));
-      // Toggle class on the parent nav container:
-      // parentElement is <nav class="site-nav"> that wraps the <ul>
-      const navContainer = nav.closest(".site-nav");
-      if (navContainer) {
-        navContainer.classList.toggle("open", open);
-      }
-    };
-
-    toggle.addEventListener("click", () => {
-      const open = toggle.getAttribute("aria-expanded") === "true";
-      setOpen(!open);
+    // dots
+    const dotsEl = document.getElementById("dots");
+    const dots = slides.map((_, i) => {
+      const b = document.createElement("button");
+      if (i === 0) b.classList.add("active");
+      b.addEventListener("click", () => goTo(i, true));
+      dotsEl.appendChild(b);
+      return b;
     });
 
-    // Initialize closed on mobile, open on desktop
-    const init = () => setOpen(window.innerWidth >= 768);
-    init();
-    window.addEventListener("resize", init);
-  }
+    const set = () => {
+      track.style.transform = `translateX(-${index * 100}%)`;
+      dots.forEach((d, i) => d.classList.toggle("active", i === index));
+    };
 
-  // Footer year
-  const yearSpan = document.getElementById("year");
-  if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+    const goTo = (i, user = false) => {
+      index = (i + slides.length) % slides.length;
+      set();
+      if (user) restart(); // reset timer if user clicks a dot
+    };
+
+    let timer = null;
+    const start = () => (timer = setInterval(() => goTo(index + 1), 4500));
+    const stop = () => timer && clearInterval(timer);
+    const restart = () => { stop(); start(); };
+
+    // pause on hover/focus for accessibility
+    track.addEventListener("mouseenter", stop);
+    track.addEventListener("mouseleave", start);
+    track.addEventListener("focusin", stop);
+    track.addEventListener("focusout", start);
+
+    start();
+  }
 });
+
 
