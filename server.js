@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const morgan = require("morgan");
 const helmet = require("helmet");
+const expressLayouts = require("express-ejs-layouts"); // <-- ADD THIS
 
 const app = express();
 
@@ -10,6 +11,8 @@ app.use(morgan("dev"));
 app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+app.use(expressLayouts);              // <-- ADD THIS
+app.set("layout", "layout");          // <-- ADD THIS (uses views/layout.ejs)
 
 app.get("/", (req, res) => {
   res.render("index", {
