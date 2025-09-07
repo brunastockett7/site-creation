@@ -149,3 +149,19 @@ body{
   flex: 1 1 300px;
   max-width: 350px;
 }
+/* Footer styling */
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;       /* spacing between links */
+  margin-top: .75rem;
+}
+
+.footer-links a {
+  text-decoration: none;
+  color: var(--text);
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
