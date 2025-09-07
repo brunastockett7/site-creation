@@ -137,3 +137,15 @@ body{
   margin:0 auto;   /* centers the image */
   display:block;   /* ensures it behaves like a block */
 }
+.info-grid {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 1.5rem;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+}
+.info-grid .info-block {
+  flex: 1 1 300px;
+  max-width: 350px;
+}
