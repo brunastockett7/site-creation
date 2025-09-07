@@ -127,3 +127,13 @@ body{
 /* Make whole card feel clickable when used as a link */
 .info-block.is-link{ cursor:pointer; }
 .info-block.is-link:hover{ filter:brightness(.98); }
+
+.brand a {
+  display:block;
+  color:#fff;
+  text-decoration:none;
+}
+.hero-std {
+  margin:0 auto;   /* centers the image */
+  display:block;   /* ensures it behaves like a block */
+}
