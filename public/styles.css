@@ -1,59 +1,83 @@
-/* ---------- Theme ---------- */
+/* ---------- Base / Theme (keep yours or this minimal set) ---------- */
 :root{
   --bg:#f8fafc; --text:#111827; --muted:#4b5563;
   --brand:#2563eb; --brand-dark:#1e3a8a;
-  --surface:#ffffff; --border:#d1d5db; --red:#c8102e;
+  --surface:#ffffff; --border:#d1d5db;
 }
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);background:var(--bg);line-height:1.6}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--text);background:var(--bg);line-height:1.6}
 img{max-width:100%;height:auto;display:block}
-.container{max-width:1200px;margin:0 auto;padding:0 1rem}
+.container{max-width:1100px;margin:0 auto;padding:0 1rem}
 
-/* ---------- Top red bar ---------- */
-.topbar{background:var(--red);color:#fff;font-size:.9rem}
-.topbar-inner{display:flex;justify-content:space-between;align-items:center;padding:.45rem 0;font-weight:600}
-.topbar .topbar-link{color:#fff;text-decoration:underline}
+/* ---------- Header: brand on top, buttons underneath ---------- */
+.site-header.simple{
+  border-bottom:1px solid var(--border);
+  background:var(--surface);
+  box-shadow:0 2px 5px rgba(0,0,0,.05);
+}
+.header-stack{
+  display:flex;flex-direction:column;align-items:center;gap:.75rem;padding:1rem 0 1.25rem;
+}
+.brand{
+  margin:0;
+  font-size:2rem;
+  font-weight:800;
+  letter-spacing:.02em;
+  color:var(--text);
+  text-align:center;
+}
+.primary-actions{
+  display:flex;gap:.75rem;flex-wrap:wrap;justify-content:center;
+}
+.pill{
+  display:inline-block;
+  padding:.55rem .9rem;
+  border:1px solid var(--border);
+  border-radius:.65rem;
+  text-decoration:none;
+  color:var(--text);
+  font-weight:700;
+  background:#fff;
+}
+.pill:hover,.pill:focus{
+  background:var(--brand);color:#fff;border-color:transparent;
+}
 
-/* ---------- Header & horizontal nav ---------- */
-.site-header{border-bottom:1px solid var(--border);background:var(--surface);box-shadow:0 2px 5px rgba(0,0,0,.05)}
-.header-inner{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.75rem 0}
-.brand{font-weight:800;text-decoration:none;color:var(--text);font-size:1.5rem}
+/* ---------- Hero: centered & standard size (not huge) ---------- */
+.hero-band{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin:1.25rem 0 1.5rem;
+  padding:1rem;
+  background:linear-gradient(135deg,#eef6ff,#ffffff);
+  border:1px solid var(--border);
+  border-radius:12px;
+}
+.hero-std{
+  width:100%;
+  max-width:760px;     /* standard max width */
+  height:320px;        /* standard height */
+  object-fit:cover;    /* nicely cropped, consistent height */
+  border-radius:10px;
+}
 
-.main-nav .nav-inline{list-style:none;display:flex;gap:1.25rem}
-.main-nav a{color:var(--text);text-decoration:none;font-weight:600;padding:.25rem .5rem;border-radius:.4rem}
-.main-nav a:hover,.main-nav a:focus{background:var(--brand);color:#fff}
+/* ---------- Info blocks (buttons scroll here) ---------- */
+.info-block{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:1rem 1.25rem;
+  margin:1rem 0;
+  box-shadow:0 2px 6px rgba(0,0,0,.06);
+}
+.info-block h2{
+  margin:.25rem 0 .35rem;
+  color:var(--brand-dark);
+  font-size:1.35rem;
+}
 
-/* remove old skip-link / menu styles if present */
-.skip-link{display:none!important}
-
-/* ---------- HERO: auto slider (banner) ---------- */
-.hero-slider{position:relative;margin:1rem 0 2rem;border-radius:12px;overflow:hidden;background:#000;aspect-ratio:16/6}
-.slides{display:flex;width:100%;height:100%;transform:translateX(0);transition:transform 600ms ease-in-out}
-.slide{flex:0 0 100%;position:relative}
-.slide img{width:100%;height:100%;object-fit:cover}
-
-/* optional left gradient like example */
-.slide::before{content:"";position:absolute;inset:0;background:linear-gradient(to right,rgba(0,0,0,.55),rgba(0,0,0,.08))}
-
-/* dots (no arrows) */
-.dots{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);display:flex;gap:.4rem;z-index:2}
-.dots button{width:10px;height:10px;border-radius:999px;border:0;background:rgba(255,255,255,.45);cursor:pointer}
-.dots button.active{background:#fff}
-
-/* ---------- Sections below (keep your existing styles) ---------- */
-.section-title{font-size:1.5rem;margin:1.5rem 0 .75rem;text-align:center;color:var(--brand-dark)}
-.grid{display:grid;grid-template-columns:1fr;gap:1.5rem}
-.card{background:var(--surface);padding:1rem;border-radius:14px;box-shadow:0 2px 6px rgba(0,0,0,.08);text-align:center;transition:transform .2s,box-shadow .2s}
-.card:hover{transform:translateY(-4px);box-shadow:0 4px 12px rgba(0,0,0,.12)}
-.card h3{margin:.75rem 0 .25rem;color:var(--brand-dark)}
-.link{font-weight:600;color:var(--brand);text-decoration:none}
-.link:hover{text-decoration:underline}
-
-/* CTA / Footer unchanged if you already had them */
-
-/* ---------- Responsive tweaks ---------- */
 @media (min-width:768px){
-  .brand{font-size:1.75rem}
-  .hero-slider{aspect-ratio:16/5}
-  .grid{grid-template-columns:repeat(3,1fr)}
+  .brand{font-size:2.2rem}
+  .hero-std{max-width:880px;height:340px}
 }

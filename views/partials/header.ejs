@@ -1,22 +1,12 @@
-<header class="site-header">
-  <!-- thin red bar across the very top -->
-  <div class="topbar">
-    <div class="container topbar-inner">
-      <span>Welcome to CSE Motors</span>
-      <a class="topbar-link" href="#inventory">View Inventory</a>
-    </div>
-  </div>
+<!-- views/partials/header.ejs -->
+<header class="site-header simple">
+  <div class="container header-stack">
+    <h1 class="brand">CSE Motors</h1>
 
-  <!-- main header: brand left + horizontal nav right -->
-  <div class="container header-inner">
-    <a class="brand" href="/">CSE Motors</a>
-
-    <nav class="main-nav" aria-label="Primary">
-      <ul class="nav-inline">
-        <li><a href="#inventory">Inventory</a></li>
-        <li><a href="#finance">Finance</a></li>
-        <li><a href="#service">Service</a></li>
-      </ul>
+    <nav class="primary-actions" aria-label="Primary">
+      <a class="pill" href="#inventory">Inventory</a>
+      <a class="pill" href="#finance">Finance</a>
+      <a class="pill" href="#service">Service</a>
     </nav>
   </div>
 </header>
