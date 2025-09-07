@@ -29,8 +29,12 @@ img{max-width:100%;height:auto;display:block}
   font-size:2rem;
   font-weight:800;
   letter-spacing:.02em;
-  color:var(--text);
   text-align:center;
+  color:#fff;                /* white text */
+  background:#dc2626;        /* red background */
+  padding:.75rem 1rem;
+  border-radius:6px;
+  width:100%;
 }
 .primary-actions{
   display:flex;gap:.75rem;flex-wrap:wrap;justify-content:center;
@@ -84,9 +88,10 @@ img{max-width:100%;height:auto;display:block}
 }
 
 /* ---------- Card Overrides ---------- */
+/* Removed the red background from CSE Motors card */
 .card.cse-motors{
-  background:#dc2626; /* red */
-  color:#fff;         /* white text for contrast */
+  background:#ffffff; /* white */
+  color:var(--text);  /* normal text color */
 }
 
 .card.inventory,
@@ -100,16 +105,3 @@ img{max-width:100%;height:auto;display:block}
   .brand{font-size:2.2rem}
   .hero-std{max-width:880px;height:340px}
 }
-/* ---------- Card Overrides ---------- */
-.card.cse-motors {
-  background: #dc2626; /* red */
-  color: #fff;         /* white text */
-}
-
-.card.inventory,
-.card.finance,
-.card.service {
-  background: #ffffff; /* white */
-  color: var(--text);
-}
-
