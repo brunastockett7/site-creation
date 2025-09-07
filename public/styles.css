@@ -100,3 +100,16 @@ img{max-width:100%;height:auto;display:block}
   .brand{font-size:2.2rem}
   .hero-std{max-width:880px;height:340px}
 }
+/* ---------- Card Overrides ---------- */
+.card.cse-motors {
+  background: #dc2626; /* red */
+  color: #fff;         /* white text */
+}
+
+.card.inventory,
+.card.finance,
+.card.service {
+  background: #ffffff; /* white */
+  color: var(--text);
+}
+
