@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <%- include('partials/head', { title, description }) %>
+  <body>
+    <%- include('partials/header') %>
+
+    <main id="main" class="container">
+      <section class="info-block">
+        <h2>Available Cars</h2>
+
+        <ul style="list-style:none;padding:0;margin:0;display:grid;gap:1rem">
+          <li class="info-block" style="background:#fff">
+            <img src="/images/sedan.webp" alt="2021 Sedan SE (Gray)" style="border-radius:8px;margin-bottom:.75rem">
+            <h3 style="margin:.25rem 0">2021 Sedan SE (Gray)</h3>
+            <p>2.0L • 35 MPG combined • Apple CarPlay • 28,400 miles</p>
+            <strong>$18,990</strong>
+          </li>
+
+          <li class="info-block" style="background:#fff">
+            <img src="/images/suv.webp" alt="2019 SUV LX (Blue)" style="border-radius:8px;margin-bottom:.75rem">
+            <h3 style="margin:.25rem 0">2019 SUV LX (Blue)</h3>
+            <p>AWD • 7 seats • Blind-spot monitor • 52,100 miles</p>
+            <strong>$22,450</strong>
+          </li>
+
+          <li class="info-block" style="background:#fff">
+            <img src="/images/truck.webp" alt="2020 Pickup XLT (White)" style="border-radius:8px;margin-bottom:.75rem">
+            <h3 style="margin:.25rem 0">2020 Pickup XLT (White)</h3>
+            <p>4x4 • Tow pkg • Bed liner • 41,300 miles</p>
+            <strong>$29,990</strong>
+          </li>
+        </ul>
+      </section>
+    </main>
+
+    <%- include('partials/footer') %>
+    <script src="/js/main.js" defer></script>
+  </body>
+</html>

@@ -105,3 +105,25 @@ img{max-width:100%;height:auto;display:block}
   .brand{font-size:2.2rem}
   .hero-std{max-width:880px;height:340px}
 }
+/* Medium light gray page bg */
+body{
+  margin:0;
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  color:var(--text);
+  background:#e5e7eb; /* <-- darker than #f3f4f6 */
+  line-height:1.6
+}
+
+/* Cards match background (no white tiles) */
+.info-block{
+  background:#e5e7eb;      /* same as body */
+  border:1px solid #d1d5db;
+  border-radius:12px;
+  padding:1rem 1.25rem;
+  margin:1rem 0;
+  box-shadow:none;         /* optional: remove drop shadow for flush look */
+}
+
+/* Make whole card feel clickable when used as a link */
+.info-block.is-link{ cursor:pointer; }
+.info-block.is-link:hover{ filter:brightness(.98); }

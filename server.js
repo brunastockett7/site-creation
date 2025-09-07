@@ -18,6 +18,29 @@ app.get("/", (req, res) => {
   });
 });
 
+/* --------- NEW ROUTES (match your clickable cards) --------- */
+app.get("/inventory", (req, res) => {
+  res.render("inventory", {
+    title: "Inventory — CSE Motors",
+    description: "Browse cars with photos, details, and prices."
+  });
+});
+
+app.get("/finance", (req, res) => {
+  res.render("finance", {
+    title: "Finance — CSE Motors",
+    description: "See requirements and steps to get financed."
+  });
+});
+
+app.get("/service", (req, res) => {
+  res.render("service", {
+    title: "Service — CSE Motors",
+    description: "Quotes and booking for maintenance and repairs."
+  });
+});
+/* ----------------------------------------------------------- */
+
 app.get("/health", (_req, res) => res.status(200).send("OK"));
 
 const PORT = process.env.PORT || 3000;
