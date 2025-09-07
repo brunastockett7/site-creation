@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <%- include('partials/head', { title, description }) %>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <%- include('partials/header') %>
+    <%- include('partials/nav') %>
+
+    <main id="main" class="container">
+      <!-- Hero -->
+      <section class="hero">
+        <div class="hero-text">
+          <h1>Your next car, made simple.</h1>
+          <p class="lead">Shop, finance, and service—all in one place with transparent pricing.</p>
+          <a class="btn" href="#inventory">Browse Inventory</a>
+          <a class="btn btn-outline" href="#finance">Get Pre-Approved</a>
+        </div>
+        <img class="hero-img" src="/images/hero.webp" alt="CSE Motors showroom with a sleek car">
+      </section>
+
+      <!-- Features -->
+      <section id="inventory" class="features" aria-labelledby="inv-heading">
+        <h2 id="inv-heading" class="section-title">Popular categories</h2>
+        <div class="grid">
+          <article class="card">
+            <img src="/images/suv.webp" alt="Family SUV">
+            <h3>SUVs</h3>
+            <p>Roomy, safe, and road-trip ready.</p>
+            <a class="link" href="#">Shop SUVs →</a>
+          </article>
+
+          <article class="card">
+            <img src="/images/sedan.webp" alt="Fuel-efficient sedan">
+            <h3>Sedans</h3>
+            <p>Compact, stylish, and efficient.</p>
+            <a class="link" href="#">Shop Sedans →</a>
+          </article>
+
+          <article class="card">
+            <img src="/images/truck.webp" alt="Pickup truck">
+            <h3>Trucks</h3>
+            <p>Strong, durable, and built for work.</p>
+            <a class="link" href="#">Shop Trucks →</a>
+          </article>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section id="finance" class="cta">
+        <div class="cta-inner">
+          <h2 class="section-title">No-pressure test drives</h2>
+          <p class="lead">Schedule online—be in and out in 30 minutes.</p>
+          <a class="btn" href="#">Book now</a>
+        </div>
+      </section>
+    </main>
+
+    <%- include('partials/footer') %>
+    <script src="/js/main.js" defer></script>
+  </body>
+</html>
