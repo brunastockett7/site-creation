@@ -1,3 +1,6 @@
+// public/js/main.js
+
+// Smooth scrolling for in-page nav links
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll('.primary-actions a[href^="#"]').forEach(a => {
     a.addEventListener("click", (e) => {

@@ -9,7 +9,6 @@ const expressLayouts = require('express-ejs-layouts');
 
 const app = express();
 
-// Security middleware
 app.use(
   helmet({
     contentSecurityPolicy: {
@@ -25,19 +24,15 @@ app.use(
   })
 );
 
-// Logger
 app.use(morgan('dev'));
-
-// Static files
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: '1d' }));
 
-// EJS view engine with layouts
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(expressLayouts);
 app.set('layout', 'layout');
 
-// Routes
+// routes
 app.get('/', (req, res) => {
   res.render('index', {
     title: 'CSE Motors — Home',
@@ -66,11 +61,16 @@ app.get('/service', (req, res) => {
   });
 });
 
-// Health check
+// health check
 app.get('/health', (_req, res) => res.status(200).send('OK'));
 
-// Start server
+// error handler (so template errors don’t crash the process)
+app.use((err, _req, res, _next) => {
+  console.error(err);
+  res.status(500).send('Server error');
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`✅ Server running at http://localhost:${PORT}`);
+  console.log(`Listening on http://0.0.0.0:${PORT}`);
 });
