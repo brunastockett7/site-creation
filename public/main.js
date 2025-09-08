@@ -1,3 +1,5 @@
+/* eslint-env browser */
+/* eslint-disable no-undef */
 document.addEventListener("DOMContentLoaded", () => {
   // Auto-update year
   const el = document.getElementById("year");
