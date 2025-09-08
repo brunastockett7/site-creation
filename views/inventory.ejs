@@ -1,39 +1,75 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <%- include('partials/head', { title, description }) %>
-  <body>
-    <%- include('partials/header') %>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CSE Motors — Available Cars</title>
+  <meta name="description" content="Browse available cars at CSE Motors. Curated inventory with transparent pricing.">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css" media="screen">
+</head>
+<body>
 
-    <main id="main" class="container">
-      <section class="info-block">
-        <h2>Available Cars</h2>
+  <header class="site-header simple">
+    <div class="container header-stack">
+      <h1 class="brand"><a href="/">CSE Motors</a></h1>
+      <nav class="primary-actions" aria-label="Primary">
+        <a class="pill" href="/inventory">Inventory</a>
+        <a class="pill" href="/finance">Finance</a>
+        <a class="pill" href="/service">Service</a>
+      </nav>
+    </div>
+  </header>
 
-        <ul style="list-style:none;padding:0;margin:0;display:grid;gap:1rem">
-          <li class="info-block" style="background:#fff">
-            <img src="/images/sedan.webp" alt="2021 Sedan SE (Gray)" style="border-radius:8px;margin-bottom:.75rem">
-            <h3 style="margin:.25rem 0">2021 Sedan SE (Gray)</h3>
-            <p>2.0L • 35 MPG combined • Apple CarPlay • 28,400 miles</p>
-            <strong>$18,990</strong>
-          </li>
+  <main id="main" class="container">
+    <section class="info-block">
+      <h2>Available Cars</h2>
 
-          <li class="info-block" style="background:#fff">
-            <img src="/images/suv.webp" alt="2019 SUV LX (Blue)" style="border-radius:8px;margin-bottom:.75rem">
-            <h3 style="margin:.25rem 0">2019 SUV LX (Blue)</h3>
-            <p>AWD • 7 seats • Blind-spot monitor • 52,100 miles</p>
-            <strong>$22,450</strong>
-          </li>
+      <ul style="list-style:none;padding:0;margin:0;display:grid;gap:1rem">
+        <li class="info-block" style="background:#fff">
+          <img src="/images/sedan.webp" alt="2021 Sedan SE (Gray)" style="border-radius:8px;margin-bottom:.75rem">
+          <h3 style="margin:.25rem 0">2021 Sedan SE (Gray)</h3>
+          <p>2.0L • 35 MPG combined • Apple CarPlay • 28,400 miles</p>
+          <strong>$18,990</strong>
+        </li>
 
-          <li class="info-block" style="background:#fff">
-            <img src="/images/truck.webp" alt="2020 Pickup XLT (White)" style="border-radius:8px;margin-bottom:.75rem">
-            <h3 style="margin:.25rem 0">2020 Pickup XLT (White)</h3>
-            <p>4x4 • Tow pkg • Bed liner • 41,300 miles</p>
-            <strong>$29,990</strong>
-          </li>
-        </ul>
-      </section>
-    </main>
+        <li class="info-block" style="background:#fff">
+          <img src="/images/suv.webp" alt="2019 SUV LX (Blue)" style="border-radius:8px;margin-bottom:.75rem">
+          <h3 style="margin:.25rem 0">2019 SUV LX (Blue)</h3>
+          <p>AWD • 7 seats • Blind-spot monitor • 52,100 miles</p>
+          <strong>$22,450</strong>
+        </li>
 
-    <%- include('partials/footer') %>
-    <script src="/js/main.js" defer></script>
-  </body>
+        <li class="info-block" style="background:#fff">
+          <img src="/images/truck.webp" alt="2020 Pickup XLT (White)" style="border-radius:8px;margin-bottom:.75rem">
+          <h3 style="margin:.25rem 0">2020 Pickup XLT (White)</h3>
+          <p>4x4 • Tow package • Bed liner • 41,300 miles</p>
+          <strong>$29,990</strong>
+        </li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>&copy; <span id="year"></span> CSE Motors. All rights reserved.</p>
+      <nav class="footer-links" aria-label="Footer">
+        <a class="link" href="/privacy">Privacy</a>
+        <a class="link" href="/terms">Terms</a>
+        <a class="link" href="/contact">Contact</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var el = document.getElementById('year');
+      if (el) el.textContent = new Date().getFullYear();
+    })();
+  </script>
+  <script src="/js/main.js" defer></script>
+</body>
 </html>

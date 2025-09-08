@@ -1,58 +1,84 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <%- include('partials/head', { title, description }) %>
-  <body>
-    <!-- No skip link -->
-    <%- include('partials/header') %>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CSE Motors — Home</title>
+  <meta name="description" content="CSE Motors: curated inventory, flexible financing, and certified service.">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css" media="screen">
+</head>
+<body>
 
-    <main id="main" class="container">
-      <!-- HERO: centered, standard size -->
-      <section class="hero-band" aria-label="Featured vehicle">
-        <img class="hero-std" src="/images/hero.webp" alt="Showroom vehicle at CSE Motors">
-      </section>
+  <header class="site-header simple">
+    <div class="container header-stack">
+      <h1 class="brand"><a href="/">CSE Motors</a></h1>
+      <nav class="primary-actions" aria-label="Primary">
+        <a class="pill" href="/inventory">Inventory</a>
+        <a class="pill" href="/finance">Finance</a>
+        <a class="pill" href="/service">Service</a>
+      </nav>
+    </div>
+  </header>
 
-      <!-- ABOUT COMPANY / HISTORY -->
-      <section class="info-block" aria-labelledby="h-about">
-        <h2 id="h-about">About CSE Motors</h2>
-        <p>
-          Founded in 2012, CSE Motors began as a small two-bay shop with one mission:
-          to deliver reliable vehicles with honest, transparent pricing. Over the years
-          we have grown into a trusted dealership, offering a curated inventory,
-          flexible financing options, and a certified service department.
-        </p>
-        <p>
-          Our commitment has never changed—treating every customer like family and
-          ensuring every car that leaves our lot is road-ready and dependable.
-        </p>
-      </section>
+  <main id="main" class="container">
+    <!-- HERO -->
+    <section class="hero-band" aria-label="Featured vehicle">
+      <img class="hero-std" src="/images/hero.webp" alt="Showroom vehicle at CSE Motors">
+    </section>
 
-      <!-- INFO SECTIONS that the buttons jump to -->
-      <section id="inventory"
-               class="info-block card inventory is-link"
-               aria-labelledby="h-inventory"
-               onclick="location.href='/inventory'">
-        <h2 id="h-inventory">Inventory</h2>
-        <p>Browse a curated selection of SUVs, sedans, and trucks. Every vehicle is inspected and backed by transparent pricing.</p>
-      </section>
+    <!-- ABOUT -->
+    <section class="info-block" aria-labelledby="h-about">
+      <h2 id="h-about">About CSE Motors</h2>
+      <p>
+        Founded in 2012, CSE Motors began as a small two-bay shop with one mission:
+        to deliver reliable vehicles with honest, transparent pricing. Over the years
+        we have grown into a trusted dealership, offering a curated inventory,
+        flexible financing options, and a certified service department.
+      </p>
+      <p>
+        Our commitment has never changed—treating every customer like family and
+        ensuring every car that leaves our lot is road-ready and dependable.
+      </p>
+    </section>
 
-      <section id="finance"
-               class="info-block card finance is-link"
-               aria-labelledby="h-finance"
-               onclick="location.href='/finance'">
-        <h2 id="h-finance">Finance</h2>
-        <p>Get pre-approved online in minutes. We partner with leading lenders to offer competitive rates and flexible terms.</p>
-      </section>
+    <!-- QUICK LINKS -->
+    <a id="inventory" class="info-block card is-link" href="/inventory" aria-labelledby="h-inventory">
+      <h2 id="h-inventory">Inventory</h2>
+      <p>Browse SUVs, sedans, and trucks. Every vehicle is inspected and priced transparently.</p>
+    </a>
 
-      <section id="service"
-               class="info-block card service is-link"
-               aria-labelledby="h-service"
-               onclick="location.href='/service'">
-        <h2 id="h-service">Service</h2>
-        <p>Certified technicians, fair quotes, and fast turnaround. Book maintenance and repairs with up-front estimates.</p>
-      </section>
-    </main>
+    <a id="finance" class="info-block card is-link" href="/finance" aria-labelledby="h-finance">
+      <h2 id="h-finance">Finance</h2>
+      <p>Get pre-approved online in minutes. Competitive rates and flexible terms.</p>
+    </a>
 
-    <%- include('partials/footer') %>
-    <script src="/js/main.js" defer></script>
-  </body>
+    <a id="service" class="info-block card is-link" href="/service" aria-labelledby="h-service">
+      <h2 id="h-service">Service</h2>
+      <p>Certified technicians, fair quotes, and fast turnaround on maintenance and repairs.</p>
+    </a>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>&copy; <span id="year"></span> CSE Motors. All rights reserved.</p>
+      <nav class="footer-links" aria-label="Footer">
+        <a class="link" href="/privacy">Privacy</a>
+        <a class="link" href="/terms">Terms</a>
+        <a class="link" href="/contact">Contact</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var el = document.getElementById('year');
+      if (el) el.textContent = new Date().getFullYear();
+    })();
+  </script>
+  <script src="/js/main.js" defer></script>
+</body>
 </html>

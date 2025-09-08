@@ -1,17 +1,29 @@
-<footer class="site-footer">
-  <div class="container footer-inner">
-    <p>&copy; <span id="year"></span> CSE Motors. All rights reserved.</p>
-    <nav class="footer-links">
-      <a class="link" href="#">Privacy</a>
-      <a class="link" href="#">Terms</a>
-      <a class="link" href="#">Contact</a>
-    </nav>
-  </div>
-</footer>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Footer — Validation Test</title>
+</head>
+<body>
 
-<!-- Scripts -->
-<script src="/main.js"></script>
-<script>
-  // Auto-update year in footer
-  document.getElementById("year").textContent = new Date().getFullYear();
-</script>
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>&copy; <span id="year"></span> CSE Motors. All rights reserved.</p>
+      <nav class="footer-links" aria-label="Footer">
+        <a class="link" href="#privacy">Privacy</a>
+        <a class="link" href="#terms">Terms</a>
+        <a class="link" href="#contact">Contact</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var el = document.getElementById('year');
+      if (el) el.textContent = new Date().getFullYear();
+    })();
+  </script>
+
+</body>
+</html>

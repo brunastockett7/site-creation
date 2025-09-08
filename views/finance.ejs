@@ -1,25 +1,61 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <%- include('partials/head', { title, description }) %>
-  <body>
-    <%- include('partials/header') %>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CSE Motors — Financing Requirements</title>
+  <meta name="description" content="Financing requirements for CSE Motors. Get pre-approved with the documents listed here.">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css" media="screen">
+</head>
+<body>
 
-    <main id="main" class="container">
-      <section class="info-block">
-        <h2>Financing Requirements</h2>
-        <ul>
-          <li>Government-issued ID</li>
-          <li>Proof of income (last 2 pay stubs or 3 months bank statements)</li>
-          <li>Proof of residence (utility bill or lease)</li>
-          <li>Down payment (optional, improves approval & rate)</li>
-          <li>Completed credit application (online or in store)</li>
-        </ul>
-        <p>Most decisions in minutes. No prepayment penalties. APR varies by credit profile.</p>
-        <a class="pill" href="#">Start Application</a>
-      </section>
-    </main>
+  <header class="site-header simple">
+    <div class="container header-stack">
+      <h1 class="brand"><a href="/">CSE Motors</a></h1>
+      <nav class="primary-actions" aria-label="Primary">
+        <a class="pill" href="/inventory">Inventory</a>
+        <a class="pill" href="/finance">Finance</a>
+        <a class="pill" href="/service">Service</a>
+      </nav>
+    </div>
+  </header>
 
-    <%- include('partials/footer') %>
-    <script src="/js/main.js" defer></script>
-  </body>
+  <main id="main" class="container">
+    <section class="info-block">
+      <h2>Financing Requirements</h2>
+      <ul>
+        <li>Government-issued ID</li>
+        <li>Proof of income (last 2 pay stubs or 3 months bank statements)</li>
+        <li>Proof of residence (utility bill or lease)</li>
+        <li>Down payment (optional, improves approval &amp; rate)</li>
+        <li>Completed credit application (online or in store)</li>
+      </ul>
+      <p>Most decisions in minutes. No prepayment penalties. APR varies by credit profile.</p>
+      <a class="pill" href="#">Start Application</a>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>&copy; <span id="year"></span> CSE Motors. All rights reserved.</p>
+      <nav class="footer-links" aria-label="Footer">
+        <a class="link" href="/privacy">Privacy</a>
+        <a class="link" href="/terms">Terms</a>
+        <a class="link" href="/contact">Contact</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var el = document.getElementById('year');
+      if (el) el.textContent = new Date().getFullYear();
+    })();
+  </script>
+  <script src="/js/main.js" defer></script>
+</body>
 </html>
