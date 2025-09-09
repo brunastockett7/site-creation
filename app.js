@@ -1,77 +1,65 @@
 /* eslint-env node */
 /* eslint-disable no-console */
 
+// app.js  (Node server)
 const express = require('express');
 const path = require('path');
-const morgan = require('morgan');
-const helmet = require('helmet');
 const expressLayouts = require('express-ejs-layouts');
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      useDefaults: true,
-      directives: {
-        'default-src': ["'self'"],
-        'script-src': ["'self'"],
-        'style-src': ["'self'", 'https:', "'unsafe-inline'"],
-        'img-src': ["'self'", 'data:', 'https:'],
-        'font-src': ["'self'", 'https://fonts.gstatic.com', 'data:'],
-      },
-    },
+// 1) Serve static files (MUST be before routes)
+app.use(express.static(path.join(__dirname, 'public')));
+
+// 2) View engine + layouts
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+app.use(expressLayouts);
+app.set('layout', 'layout'); // views/layout.ejs
+
+// 3) Routes (render content-only views)
+app.get('/', (req, res) =>
+  res.render('index', {
+    title: 'CSE Motors — Home',
+    description: 'CSE Motors: curated inventory, flexible financing, and certified service.'
   })
 );
 
-app.use(morgan('dev'));
-app.use(express.static(path.join(__dirname, 'public'), { maxAge: '1d' }));
-
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-
-app.use(expressLayouts);
-app.set('layout', 'layout'); // your layout file is layout.ejs
-
-// Routes
-app.get('/', (req, res) => {
-  res.render('index', {
-    title: 'CSE Motors — Home',
-    description: 'Shop, finance, and service with transparent pricing.',
-  });
-});
-
-app.get('/inventory', (req, res) => {
+app.get('/inventory', (req, res) =>
   res.render('inventory', {
-    title: 'Inventory — CSE Motors',
-    description: 'Browse cars with photos, details, and prices.',
-  });
-});
+    title: 'Inventory - CSE Motors',
+    description: 'Browse SUVs, sedans, and trucks. Transparent pricing.'
+  })
+);
 
-app.get('/finance', (req, res) => {
+app.get('/finance', (req, res) =>
   res.render('finance', {
-    title: 'Finance — CSE Motors',
-    description: 'Financing requirements for CSE Motors. Get pre-approved with the documents listed here.',
-  });
-});
+    title: 'Finance - CSE Motors',
+    description: 'Get pre-approved online in minutes. Competitive rates.'
+  })
+);
 
-app.get('/service', (req, res) => {
+app.get('/service', (req, res) =>
   res.render('service', {
-    title: 'Service — CSE Motors',
-    description: 'Quotes and booking for maintenance and repairs.',
-  });
+    title: 'Service & Maintenance - CSE Motors',
+    description: 'Certified technicians, fair quotes, fast turnaround.'
+  })
+);
+
+app.get('/privacy', (req, res) =>
+  res.render('privacy', { title: 'Privacy - CSE Motors', description: 'Privacy policy.' })
+);
+app.get('/terms', (req, res) =>
+  res.render('terms', { title: 'Terms - CSE Motors', description: 'Terms of service.' })
+);
+app.get('/contact', (req, res) =>
+  res.render('contact', { title: 'Contact - CSE Motors', description: 'Contact us.' })
+);
+
+// 404
+app.use((req, res) => {
+  res.status(404).render('404', { title: 'Not Found', description: 'Page not found.' });
 });
 
-// Health check
-app.get('/health', (_req, res) => res.status(200).send('OK'));
-
-// Error handler (prevent crashes)
-app.use((err, _req, res, _next) => {
-  console.error(err);
-  res.status(500).send('Server error');
-});
-
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server listening on ${PORT}`));
