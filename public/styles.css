@@ -73,18 +73,29 @@ img{max-width:100%;height:auto;display:block}
 }
 
 /* ---------- Info blocks (buttons scroll here) ---------- */
-.info-block{
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:1rem 1.25rem;
-  margin:1rem 0;
-  box-shadow:0 2px 6px rgba(0,0,0,.06);
+.info-block {
+  background: var(--surface);   /* usually white */
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  margin: 1rem 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .06);
 }
-.info-block h2{
-  margin:.25rem 0 .35rem;
-  color:var(--brand-dark);
-  font-size:1.35rem;
+
+.info-block h2 {
+  margin: .25rem 0 .35rem;
+  color: var(--brand-dark);
+  font-size: 1.35rem;
+}
+
+/* Make link cards clickable and look nice */
+a.info-block {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+a.info-block:hover {
+  filter: brightness(.98);
 }
 
 /* ---------- Card Overrides ---------- */
@@ -112,16 +123,6 @@ body{
   color:var(--text);
   background:#e5e7eb; /* <-- darker than #f3f4f6 */
   line-height:1.6
-}
-
-/* Cards match background (no white tiles) */
-.info-block{
-  background:#e5e7eb;      /* same as body */
-  border:1px solid #d1d5db;
-  border-radius:12px;
-  padding:1rem 1.25rem;
-  margin:1rem 0;
-  box-shadow:none;         /* optional: remove drop shadow for flush look */
 }
 
 /* Make whole card feel clickable when used as a link */
@@ -164,4 +165,20 @@ body{
 
 .footer-links a:hover {
   text-decoration: underline;
+}
+
+html, body {
+  height: 100%; /* allow flex layout to fill viewport */
+  margin: 0;
+}
+
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%; /* fill viewport height */
+}
+
+/* Let main take up available vertical space */
+.page-wrapper main {
+  flex: 1;
 }

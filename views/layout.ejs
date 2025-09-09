@@ -15,17 +15,15 @@
   <meta name="theme-color" content="#2563eb" />
 </head>
 <body>
-  <!-- Header -->
-  <%- include('partials/header') %>
+  <div class="page-wrapper">
+    <%- include('partials/header') %>
 
-  <!-- Main content injected here -->
-  <main id="main" class="container">
-    <%- body %>
-  </main>
+    <main id="main" class="container">
+      <%- body %>
+    </main>
+  </div>
 
-  <!-- Footer -->
   <%- include('partials/footer') %>
-
   <script src="/js/main.js" defer></script>
 </body>
 </html>
