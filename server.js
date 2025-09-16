@@ -7,6 +7,10 @@ const morgan = require('morgan');
 const helmet = require('helmet');
 const expressLayouts = require('express-ejs-layouts');
 
+// 👇 add controllers + routes
+const inventoryRoute = require("./routes/inventoryroute");
+const { home, buildNavData } = require("./controllers/basecontroller");
+
 const app = express();
 
 app.use(
@@ -32,21 +36,25 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(expressLayouts);
 app.set('layout', 'layout');
 
-// routes
-app.get('/', (req, res) => {
-  res.render('index', {
-    title: 'CSE Motors — Home',
-    description: 'Shop, finance, and service with transparent pricing.',
-  });
+// 👇 make nav available to all views
+app.use(async (req, res, next) => {
+  try {
+    res.locals.nav = await buildNavData();
+    next();
+  } catch (e) {
+    next(e);
+  }
 });
 
-app.get('/inventory', (req, res) => {
-  res.render('inventory', {
-    title: 'Inventory — CSE Motors',
-    description: 'Browse cars with photos, details, and prices.',
-  });
-});
+// ------------------- ROUTES -------------------
 
+// Home (dynamic, with nav)
+app.get("/", home);
+
+// Inventory (MVC)
+app.use("/inv", inventoryRoute);
+
+// Keep your static finance/service routes
 app.get('/finance', (req, res) => {
   res.render('finance', {
     title: 'Finance — CSE Motors',

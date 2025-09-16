@@ -1,27 +1,24 @@
+<section class="info-block">
+  <h2><%= title %></h2>
 
-    <section class="info-block">
-      <h2>Available Cars</h2>
-
-      <ul style="list-style:none;padding:0;margin:0;display:grid;gap:1rem">
+  <% if (!items || !items.length) { %>
+    <p>No inventory found for this classification.</p>
+  <% } else { %>
+    <ul style="list-style:none;padding:0;margin:0;display:grid;gap:1rem">
+      <% items.forEach(it => { %>
         <li class="info-block" style="background:#fff">
-          <img src="/images/sedan.webp" alt="2021 Sedan SE (Gray)" style="border-radius:8px;margin-bottom:.75rem" />
-          <h3 style="margin:.25rem 0">2021 Sedan SE (Gray)</h3>
-          <p>2.0L • 35 MPG combined • Apple CarPlay • 28,400 miles</p>
-          <strong>$18,990</strong>
-        </li>
+          <!-- If you later add an image column in DB, render it here -->
+          <!-- <img src="<%= it.photo_url %>" alt="<%= `${it.inv_year} ${it.inv_make} ${it.inv_model}` %>" style="border-radius:8px;margin-bottom:.75rem" /> -->
 
-        <li class="info-block" style="background:#fff">
-          <img src="/images/suv.webp" alt="2019 SUV LX (Blue)" style="border-radius:8px;margin-bottom:.75rem" />
-          <h3 style="margin:.25rem 0">2019 SUV LX (Blue)</h3>
-          <p>AWD • 7 seats • Blind-spot monitor • 52,100 miles</p>
-          <strong>$22,450</strong>
+          <h3 style="margin:.25rem 0">
+            <%= it.inv_year %> <%= it.inv_make %> <%= it.inv_model %>
+          </h3>
+          <p>
+            <!-- Add more fields like mileage/features once your DB has them -->
+          </p>
+          <strong>$<%= Number(it.inv_price).toLocaleString() %></strong>
         </li>
-
-        <li class="info-block" style="background:#fff">
-          <img src="/images/truck.webp" alt="2020 Pickup XLT (White)" style="border-radius:8px;margin-bottom:.75rem" />
-          <h3 style="margin:.25rem 0">2020 Pickup XLT (White)</h3>
-          <p>4x4 • Tow package • Bed liner • 41,300 miles</p>
-          <strong>$29,990</strong>
-        </li>
-      </ul>
-    </section>
+      <% }) %>
+    </ul>
+  <% } %>
+</section>

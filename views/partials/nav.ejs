@@ -1,9 +1,24 @@
+<nav class="site-nav" aria-label="Primary">
+  <ul id="primary-nav" class="nav-list">
+    <!-- Home is static -->
+    <li><a href="/">Home</a></li>
 
-  <nav class="site-nav" aria-label="Primary">
-    <ul id="primary-nav" class="nav-list">
-      <li><a href="/">Home</a></li>
-      <li><a href="#inventory">Inventory</a></li>
-      <li><a href="#finance">Financing</a></li>
-      <li><a href="#service">Service</a></li>
-    </ul>
-  </nav>
+    <!-- Inventory classifications come from the DB -->
+    <% const list = (typeof nav !== 'undefined' && nav) ? nav : (res.locals?.nav || []); %>
+    <% if (list.length) { %>
+      <% list.forEach(c => { %>
+        <li>
+          <a href="/inv/type/<%= c.classification_id %>">
+            <%= c.classification_name %>
+          </a>
+        </li>
+      <% }) %>
+    <% } else { %>
+      <li><em>No inventory categories</em></li>
+    <% } %>
+
+    <!-- Finance and Service stay static -->
+    <li><a href="/finance">Financing</a></li>
+    <li><a href="/service">Service</a></li>
+  </ul>
+</nav>
