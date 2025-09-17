@@ -1,11 +1,11 @@
 <%- include("../partials/header", { nav }) %>
 
-<main class="container">
-  <!-- Page heading (make + model) -->
+<main class="container detail-page">
   <h1 class="page-title"><%= title %></h1>
-
-  <!-- Vehicle detail HTML generated in utilities.buildDetailView -->
-  <%- content %>
+  
+  <section class="detail-wrapper">
+    <%- content %>
+  </section>
 </main>
 
 <%- include("../partials/footer") %>

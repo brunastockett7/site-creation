@@ -4,18 +4,34 @@
   <% if (!items || !items.length) { %>
     <p>No inventory found for this classification.</p>
   <% } else { %>
+    <% function slug(s){ 
+         return String(s).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''); 
+       } %>
+
     <ul style="list-style:none;padding:0;margin:0;display:grid;gap:1rem">
-      <% items.forEach(it => { %>
-        <li class="info-block" style="background:#fff;padding:1rem;border-radius:8px">
-          <h3 style="margin:.25rem 0">
-            <a href="/inv/detail/<%= it.inv_id %>" style="text-decoration:none;color:inherit">
-              <%= it.inv_year %> <%= it.inv_make %> <%= it.inv_model %>
-            </a>
-          </h3>
-          <p>
-            <!-- You can later add mileage/features here if your query includes them -->
-          </p>
-          <strong><%= utilities.formatPrice(it.inv_price) %></strong>
+      <% items.forEach(it => { 
+           const fname = (it.inv_image && it.inv_image.trim())
+             ? it.inv_image.trim()
+             : `${slug(it.inv_make)}-${slug(it.inv_model)}-${it.inv_year}.webp`; %>
+
+        <li class="info-block" style="background:#fff;padding:1rem;border-radius:8px;display:grid;grid-template-columns:120px 1fr;gap:1rem;align-items:center">
+          
+          <!-- Thumbnail image -->
+          <a href="/inv/detail/<%= it.inv_id %>">
+            <img src="/images/<%= fname %>" 
+                 alt="<%= it.inv_year %> <%= it.inv_make %> <%= it.inv_model %>"
+                 style="width:120px;height:auto;display:block;border-radius:6px;object-fit:cover">
+          </a>
+
+          <!-- Vehicle info -->
+          <div>
+            <h3 style="margin:.25rem 0">
+              <a href="/inv/detail/<%= it.inv_id %>" style="text-decoration:none;color:inherit">
+                <%= it.inv_year %> <%= it.inv_make %> <%= it.inv_model %>
+              </a>
+            </h3>
+            <p><strong><%= utilities.formatPrice(it.inv_price) %></strong></p>
+          </div>
         </li>
       <% }) %>
     </ul>
