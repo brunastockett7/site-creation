@@ -218,3 +218,37 @@ html, body {
     grid-template-columns: 1fr 1fr;
   }
 }
+/* Brand on its own line, centered */
+.brand{
+  margin: 0;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 800;
+}
+.brand a{
+  color: #dc2626;           /* red brand text */
+  text-decoration: none;
+}
+
+/* Put Home, Sedan, SUV, Truck on one horizontal line under brand */
+.main-nav ul{
+  list-style: none;
+  display: flex;
+  justify-content: center;  /* center the row */
+  gap: 1.5rem;              /* space between links */
+  padding: 0;
+  margin: .5rem 0 1rem;
+}
+.main-nav li{ display: inline; }
+.main-nav a{
+  text-decoration: none;
+  font-weight: 600;
+  color: var(--brand-dark, #1e3a8a);
+}
+.main-nav a:hover{
+  color: var(--brand, #2563eb);
+  text-decoration: underline;
+}
+
+/* Optional: a bit of spacing below header */
+.header-stack{ padding: .75rem 0 1rem; }
