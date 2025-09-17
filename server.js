@@ -36,6 +36,14 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(expressLayouts);
 app.set('layout', 'layout');
 
+// Show the 500 trigger link only on inventory pages (/inv/*)
+// (Change the condition to req.path === '/' if you prefer Home-only)
+app.use((req, res, next) => {
+  res.locals.showErrorLink = req.path.startsWith('/inv');
+  next();
+});
+
+
 // ------------------- ROUTES -------------------
 
 // Home (MVC via controller)

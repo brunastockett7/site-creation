@@ -5,7 +5,10 @@
       <a class="link" href="#privacy">Privacy</a>
       <a class="link" href="#terms">Terms</a>
       <a class="link" href="#contact">Contact</a>
-      <a class="link" href="/inv/trigger-500-error">Trigger 500 Error</a>
+
+      <% if (showErrorLink) { %>
+        <a class="link" href="/inv/trigger-error">Trigger 500 Error</a>
+      <% } %>
     </nav>
   </div>
 </footer>
