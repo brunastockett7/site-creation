@@ -6,17 +6,16 @@
   <% } else { %>
     <ul style="list-style:none;padding:0;margin:0;display:grid;gap:1rem">
       <% items.forEach(it => { %>
-        <li class="info-block" style="background:#fff">
-          <!-- If you later add an image column in DB, render it here -->
-          <!-- <img src="<%= it.photo_url %>" alt="<%= `${it.inv_year} ${it.inv_make} ${it.inv_model}` %>" style="border-radius:8px;margin-bottom:.75rem" /> -->
-
+        <li class="info-block" style="background:#fff;padding:1rem;border-radius:8px">
           <h3 style="margin:.25rem 0">
-            <%= it.inv_year %> <%= it.inv_make %> <%= it.inv_model %>
+            <a href="/inv/detail/<%= it.inv_id %>" style="text-decoration:none;color:inherit">
+              <%= it.inv_year %> <%= it.inv_make %> <%= it.inv_model %>
+            </a>
           </h3>
           <p>
-            <!-- Add more fields like mileage/features once your DB has them -->
+            <!-- You can later add mileage/features here if your query includes them -->
           </p>
-          <strong>$<%= Number(it.inv_price).toLocaleString() %></strong>
+          <strong><%= utilities.formatPrice(it.inv_price) %></strong>
         </li>
       <% }) %>
     </ul>

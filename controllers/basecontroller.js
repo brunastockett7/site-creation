@@ -1,18 +1,21 @@
-const invModel = require("../models/inventory-model");
+const utilities = require("../utilities/")
 
-async function buildNavData() {
-  return await invModel.getClassifications();
-}
+const baseController = {}
 
-async function home(req, res, next) {
+/* ***********************
+ *  Build home page
+ *************************/
+baseController.buildHome = async function (req, res, next) {
   try {
-    const nav = await buildNavData();
+    const nav = await utilities.getNav()
     res.render("index", {
       title: "CSE Motors — Home",
       description: "Shop, finance, and service with transparent pricing.",
       nav,
-    });
-  } catch (e) { next(e); }
+    })
+  } catch (err) {
+    next(err)
+  }
 }
 
-module.exports = { home, buildNavData };
+module.exports = baseController

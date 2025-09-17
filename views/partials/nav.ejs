@@ -4,18 +4,7 @@
     <li><a href="/">Home</a></li>
 
     <!-- Inventory classifications come from the DB -->
-    <% const list = (typeof nav !== 'undefined' && nav) ? nav : (res.locals?.nav || []); %>
-    <% if (list.length) { %>
-      <% list.forEach(c => { %>
-        <li>
-          <a href="/inv/type/<%= c.classification_id %>">
-            <%= c.classification_name %>
-          </a>
-        </li>
-      <% }) %>
-    <% } else { %>
-      <li><em>No inventory categories</em></li>
-    <% } %>
+    <%- nav %> <!-- Directly include the HTML from utilities.getNav() -->
 
     <!-- Finance and Service stay static -->
     <li><a href="/finance">Financing</a></li>

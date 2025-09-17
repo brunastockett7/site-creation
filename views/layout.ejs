@@ -1,29 +1,26 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <!-- Use partial for head or inline, your choice -->
-  <%- include('partials/head', { title, description }) %>
-
-  <!-- Styles -->
-  <link rel="stylesheet" href="/styles.css" media="screen" />
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="<%= title %>" />
-  <meta property="og:description" content="<%= description %>" />
-  <meta property="og:type" content="website" />
-
-  <meta name="theme-color" content="#2563eb" />
+  <meta charset="utf-8">
+  <title><%= title || 'CSE Motors' %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-  <div class="page-wrapper">
-    <%- include('partials/header') %>
+  <header class="site-header">
+    <!-- Navigation comes from res.locals.nav -->
+    <nav class="main-nav"><%- nav %></nav>
+  </header>
 
-    <main id="main" class="container">
-      <%- body %>
-    </main>
-  </div>
+  <main class="container">
+    <!-- This is where each child view (inventory.ejs, detail.ejs, error.ejs) will render -->
+    <%- body %>
+  </main>
 
-  <%- include('partials/footer') %>
-  <script src="/main.js" defer></script>
+  <footer class="site-footer">
+    <p>&copy; <%= new Date().getFullYear() %> CSE Motors</p>
+    <!-- ✅ Required by rubric: trigger intentional error -->
+    <a href="/inv/trigger-error">Trigger 500 Error</a>
+  </footer>
 </body>
 </html>

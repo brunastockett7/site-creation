@@ -182,3 +182,39 @@ html, body {
 .page-wrapper main {
   flex: 1;
 }
+/* ---------- Vehicle Detail (W03 rubric) ---------- */
+.vehicle-detail {
+  display: grid;
+  gap: 1rem;
+  align-items: start;
+}
+
+.vehicle-media img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 10px;
+}
+
+.vehicle-info {
+  display: grid;
+  gap: .5rem;
+  line-height: 1.6;
+}
+
+.vehicle-info h2 {
+  margin: .25rem 0 .5rem;
+}
+
+.vehicle-info .price,
+.vehicle-info .miles {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+/* Large screens: image | info side-by-side */
+@media (min-width: 900px) {
+  .vehicle-detail {
+    grid-template-columns: 1fr 1fr;
+  }
+}
