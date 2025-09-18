@@ -252,3 +252,78 @@ html, body {
 
 /* Optional: a bit of spacing below header */
 .header-stack{ padding: .75rem 0 1rem; }
+
+
+/* ===== Base & Layout ===== */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+img { max-width: 100%; height: auto; display: block; }
+
+/* Container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* ===== Accessibility (Frontend Checklist) ===== */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.skip-link:focus {
+  position: static;
+  width: auto; height: auto;
+  padding: .5rem 1rem;
+  outline: 2px solid;
+}
+
+/* Ensure focus is visible */
+a:focus, button:focus, [tabindex]:focus {
+  outline: 2px solid;
+  outline-offset: 2px;
+}
+
+/* ===== Detail Page Layout ===== */
+/* Wrapper around the utility-built HTML */
+.detail-page .detail-wrapper {
+  margin-block: 1rem 2rem;
+}
+
+/* The utility returns <section class="vehicle-detail"> … */
+.vehicle-detail {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;           /* stacked on small screens */
+  align-items: start;
+}
+
+/* Side-by-side on larger screens */
+@media (min-width: 768px) {
+  .vehicle-detail { grid-template-columns: 1fr 1fr; }
+}
+
+/* Optional: constrain media area spacing */
+.vehicle-detail .vehicle-media { margin: 0; }
+
+/* Images: responsive by default; keep natural size */
+.vehicle-detail img {
+  width: 100%;
+  height: auto;
+  /* If you ever want to cap tall images, uncomment:
+  max-height: 420px;
+  object-fit: cover;
+  */
+}
+
+/* Typography helpers */
+.page-title { margin: 0 0 .75rem; }
+.vehicle-detail h2 { margin: 0 0 .5rem; }
+.vehicle-detail p { margin: .25rem 0; }
+
+/* Price emphasis */
+.vehicle-detail p strong { font-weight: 700; }

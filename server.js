@@ -43,7 +43,6 @@ app.use((req, res, next) => {
   next();
 });
 
-
 // ------------------- ROUTES -------------------
 
 // Home (MVC via controller)
@@ -74,7 +73,7 @@ app.get('/health', (_req, res) => res.status(200).send('OK'));
 
 // 404 - Not Found (required by rubric)
 app.use((req, res) => {
-  res.status(404).render('error/error', {
+  res.status(404).render('error', {
     title: 'Not Found',
     status: 404,
     message: 'Page not found'
@@ -84,7 +83,7 @@ app.use((req, res) => {
 // 500 - Server Error (required by rubric)
 app.use((err, _req, res, _next) => {
   console.error(err);
-  res.status(500).render('error/error', {
+  res.status(500).render('error', {
     title: 'Server Error',
     status: 500,
     message: 'Something went wrong on the server.'

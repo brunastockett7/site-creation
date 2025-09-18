@@ -47,19 +47,19 @@ async function listByClassification(req, res, next) {
 async function buildById(req, res, next) {
   try {
     const nav = await utilities.getNav()
-    const { invId } = req.params
-    const vehicle = await invModel.getVehicleById(invId)
+    const { inv_id } = req.params   // ✅ FIX: match route param
+    const vehicle = await invModel.getVehicleById(inv_id)
 
     if (!vehicle) {
-      return res.status(404).render("error/error", {
+      return res.status(404).render("error", {  // ✅ FIX: correct error view name
         status: 404,
         message: "Vehicle not found"
       })
     }
 
     const content = utilities.buildDetailView(vehicle)
-    res.render("inventory/detail", {
-      title: `${vehicle.inv_make} ${vehicle.inv_model}`,
+    res.render("inventory/detail", {  // ✅ FIX: file in views/inventory/detail.ejs
+      title: `${vehicle.inv_year} ${vehicle.inv_make} ${vehicle.inv_model}`, // show year too
       nav,
       content
     })
