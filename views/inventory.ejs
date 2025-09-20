@@ -10,17 +10,27 @@
 
     <ul style="list-style:none;padding:0;margin:0;display:grid;gap:1rem">
       <% items.forEach(it => { 
-           const fname = (it.inv_image && it.inv_image.trim())
-             ? it.inv_image.trim()
-             : `${slug(it.inv_make)}-${slug(it.inv_model)}-${it.inv_year}.webp`; %>
+           // Build a base filename (no extension)
+           const base = (it.inv_image && it.inv_image.trim())
+             ? it.inv_image.trim().replace(/\.(webp|jpg|jpeg|png)$/i,'')
+             : `${slug(it.inv_make)}-${slug(it.inv_model)}-${it.inv_year}`;
+      %>
 
         <li class="info-block" style="background:#fff;padding:1rem;border-radius:8px;display:grid;grid-template-columns:120px 1fr;gap:1rem;align-items:center">
           
-          <!-- Thumbnail image -->
+          <!-- Thumbnail image with fallbacks -->
           <a href="/inv/detail/<%= it.inv_id %>">
-            <img src="/images/<%= fname %>" 
-                 alt="<%= it.inv_year %> <%= it.inv_make %> <%= it.inv_model %>"
-                 style="width:120px;height:auto;display:block;border-radius:6px;object-fit:cover">
+            <picture>
+              <source srcset="/images/<%= base %>.webp" type="image/webp">
+              <img
+                src="/images/<%= base %>.jpg"
+                alt="<%= it.inv_year %> <%= it.inv_make %> <%= it.inv_model %>"
+                style="width:120px;height:auto;display:block;border-radius:6px;object-fit:cover"
+                onerror="this.onerror=null;
+                         this.src='/images/<%= base %>.png';
+                         this.onerror=function(){ this.src='/images/placeholder.png'; };"
+              >
+            </picture>
           </a>
 
           <!-- Vehicle info -->
