@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 
 // ⚠️ Case-sensitive on Linux/Render: make sure the file is named exactly "invController.js"
-const invController = require("../controllers/invController");
+const invController = require("../controllers/invcontroller");
 
 // Hub (list classifications)
 router.get("/type", invController.classificationHub);
