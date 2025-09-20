@@ -1,20 +1,23 @@
-const express = require("express")
-const router = express.Router()
-const invController = require("../controllers/invcontroller")
+// routes/inventoryroute.js
+const express = require("express");
+const router = express.Router();
 
-// Show hub page
-router.get("/type", invController.classificationHub)
+// ⚠️ Case-sensitive on Linux/Render: make sure the file is named exactly "invController.js"
+const invController = require("../controllers/invController");
 
-// Show inventory for a specific classification
-router.get("/type/:classificationId", invController.listByClassification)
+// Hub (list classifications)
+router.get("/type", invController.classificationHub);
 
-// Show vehicle detail for a specific vehicle
-router.get("/detail/:inv_id", invController.buildById)
+// Inventory list for a classification
+router.get("/type/:classificationId", invController.listByClassification);
 
-// Intentional error route (for Task 3 / rubric)
-router.get("/trigger-500-error", (_req, _res, next) => {
-  next(new Error("Intentional 500 error for testing"))
-})
+// Vehicle detail by id
+router.get("/detail/:inv_id", invController.buildById);
 
-module.exports = router
+// Footer-triggered error for rubric (intentional 500)
+router.get("/trigger-error", (_req, _res, next) => {
+  next(new Error("Forced test error from footer link"));
+});
+
+module.exports = router;
 
