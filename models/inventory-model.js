@@ -10,10 +10,10 @@ async function getClassifications() {
   return rows
 }
 
-// Get inventory by classification id
+// Get inventory by classification id (now includes miles)
 async function getInventoryByClassification(classificationId) {
   const { rows } = await db.query(
-    `SELECT inv_id, inv_make, inv_model, inv_year, inv_price
+    `SELECT inv_id, inv_make, inv_model, inv_year, inv_price, inv_miles, inv_image
      FROM inventory
      WHERE classification_id = $1
      ORDER BY inv_make, inv_model`,
@@ -22,7 +22,7 @@ async function getInventoryByClassification(classificationId) {
   return rows
 }
 
-// ✅ NEW: Get details for a single vehicle by inventory id
+// Get details for a single vehicle by inventory id
 async function getVehicleById(invId) {
   const { rows } = await db.query(
     `SELECT inv_id, inv_make, inv_model, inv_year, inv_price,
@@ -37,5 +37,5 @@ async function getVehicleById(invId) {
 module.exports = { 
   getClassifications, 
   getInventoryByClassification, 
-  getVehicleById   // don’t forget to export!
+  getVehicleById
 }

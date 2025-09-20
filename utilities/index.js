@@ -36,9 +36,10 @@ Util.formatPrice = function (price) {
 }
 
 /* ************************
- * Format mileage with commas
+ * Format mileage with commas + " miles"
  ************************** */
 Util.formatMiles = function (miles) {
+  if (miles == null) return "N/A"
   return `${new Intl.NumberFormat("en-US").format(miles)} miles`
 }
 

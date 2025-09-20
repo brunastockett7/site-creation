@@ -30,7 +30,13 @@
                 <%= it.inv_year %> <%= it.inv_make %> <%= it.inv_model %>
               </a>
             </h3>
-            <p><strong><%= utilities.formatPrice(it.inv_price) %></strong></p>
+            <p><strong>Price:</strong> <%= utilities.formatPrice(it.inv_price) %></p>
+            <p class="miles" style="margin:.1rem 0;color:#555;">
+              <strong>Mileage:</strong>
+              <%= typeof it.inv_miles !== "undefined" && it.inv_miles !== null 
+                    ? utilities.formatMiles(it.inv_miles)
+                    : "N/A" %>
+            </p>
           </div>
         </li>
       <% }) %>
