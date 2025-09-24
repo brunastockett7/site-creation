@@ -1,0 +1,63 @@
+<main class="container">
+  <h1>Add Vehicle</h1>
+
+  <% if (locals.flash?.error && flash.error.length) { %>
+    <div class="flash error" role="alert"><%= flash.error[0] %></div>
+  <% } %>
+
+  <form method="post" action="/inv/add-vehicle" novalidate>
+    <label for="inv_make">Make</label>
+    <input id="inv_make" name="inv_make" type="text" minlength="2" required
+           value="<%= values?.inv_make || '' %>">
+    <% if (errors?.inv_make) { %><span class="error"><%= errors.inv_make %></span><% } %>
+
+    <label for="inv_model">Model</label>
+    <input id="inv_model" name="inv_model" type="text" required
+           value="<%= values?.inv_model || '' %>">
+    <% if (errors?.inv_model) { %><span class="error"><%= errors.inv_model %></span><% } %>
+
+    <label for="inv_description">Description</label>
+    <textarea id="inv_description" name="inv_description" minlength="10" required><%= values?.inv_description || '' %></textarea>
+    <% if (errors?.inv_description) { %><span class="error"><%= errors.inv_description %></span><% } %>
+
+    <label for="inv_image">Image Path</label>
+    <input id="inv_image" name="inv_image" type="text" required
+           pattern="^\/images\/[^ ]+\.(jpg|jpeg|png|webp)$"
+           value="<%= values?.inv_image || '/images/no-image.png' %>">
+    <% if (errors?.inv_image) { %><span class="error"><%= errors.inv_image %></span><% } %>
+
+    <label for="inv_thumbnail">Thumbnail Path</label>
+    <input id="inv_thumbnail" name="inv_thumbnail" type="text" required
+           pattern="^\/images\/[^ ]+\.(jpg|jpeg|png|webp)$"
+           value="<%= values?.inv_thumbnail || '/images/no-image-tn.png' %>">
+    <% if (errors?.inv_thumbnail) { %><span class="error"><%= errors.inv_thumbnail %></span><% } %>
+
+    <label for="inv_price">Price</label>
+    <input id="inv_price" name="inv_price" type="number" min="0" step="0.01" required
+           value="<%= values?.inv_price ?? '' %>">
+    <% if (errors?.inv_price) { %><span class="error"><%= errors.inv_price %></span><% } %>
+
+    <label for="inv_stock">Stock</label>
+    <input id="inv_stock" name="inv_stock" type="number" min="0" step="1" required
+           value="<%= values?.inv_stock ?? '' %>">
+    <% if (errors?.inv_stock) { %><span class="error"><%= errors.inv_stock %></span><% } %>
+
+    <label for="inv_color">Color</label>
+    <input id="inv_color" name="inv_color" type="text" pattern="[A-Za-z ]{3,30}" required
+           value="<%= values?.inv_color || '' %>">
+    <% if (errors?.inv_color) { %><span class="error"><%= errors.inv_color %></span><% } %>
+
+    <label for="classificationList">Classification</label>
+    <%- classificationSelect %>
+    <% if (errors?.classification_id) { %><span class="error"><%= errors.classification_id %></span><% } %>
+
+    <button type="submit">Save</button>
+  </form>
+</main>
+
+<script>
+  // Frontend checklist: simple validity hook
+  document.querySelector("form").addEventListener("submit", (e) => {
+    if (!e.target.checkValidity()) { e.preventDefault(); e.target.reportValidity(); }
+  });
+</script>

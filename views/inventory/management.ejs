@@ -1,0 +1,15 @@
+<main class="container">
+  <h1>Inventory Management</h1>
+
+  <% if (locals.flash?.error && flash.error.length) { %>
+    <div class="flash error" role="alert"><%= flash.error[0] %></div>
+  <% } %>
+  <% if (locals.flash?.success && flash.success.length) { %>
+    <div class="flash success" role="status"><%= flash.success[0] %></div>
+  <% } %>
+
+  <ul>
+    <li><a href="/inv/add-classification">Add New Classification</a></li>
+    <li><a href="/inv/add-vehicle">Add New Vehicle</a></li>
+  </ul>
+</main>
