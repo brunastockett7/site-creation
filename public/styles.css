@@ -327,3 +327,298 @@ a:focus, button:focus, [tabindex]:focus {
 
 /* Price emphasis */
 .vehicle-detail p strong { font-weight: 700; }
+
+/* ====== APPEND-ONLY STYLES (safe to paste at end) ====== */
+
+/* Top nav (Home · Inventory · Finance · Service + classes) */
+.nav-list {
+  display: flex;
+  gap: .75rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  margin: .5rem 0 0;
+}
+.nav-list a {
+  display: inline-block;
+  padding: .4rem .75rem;
+  border-radius: 999px;
+  text-decoration: none;
+  color: var(--text);
+}
+.nav-list a:hover {
+  background: rgba(0,0,0,.06);
+}
+
+/* Hero (yours already looks good—keep centered) */
+.hero-band { display:flex; justify-content:center; }
+.hero-std  { display:block; margin:0 auto; }
+
+/* Feature cards under hero (Inventory / Finance / Service) */
+.feature-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  margin: 1rem 0 1.5rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,.06);
+}
+.link-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.link-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(0,0,0,.10);
+}
+
+/* Inventory gallery */
+.inventory-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  margin: 1rem 0 2rem;
+}
+.vehicle-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 1px 3px rgba(0,0,0,.06);
+}
+.vehicle-media img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+.vehicle-info {
+  padding: .75rem .9rem;
+  display: grid;
+  gap: .35rem;
+}
+.vehicle-info h3 { margin: .1rem 0; font-size: 1.05rem; }
+.price { font-weight: 700; }
+.miles, .muted, .lead { color: var(--muted); }
+.lead  { font-size: 1.1rem; }
+
+/* Buttons (primary + subtle secondary) */
+.btn {
+  display: inline-block;
+  padding: .55rem .9rem;
+  border-radius: 10px;
+  text-decoration: none;
+  background: var(--brand);
+  color: #fff;
+  font-weight: 600;
+}
+.btn:hover { filter: brightness(.95); }
+.btn.secondary {
+  background: #e9eef7;
+  color: var(--brand-dark);
+}
+
+/* Flash messages (session) */
+.flash { border-radius: 10px; padding: .6rem .9rem; margin: .75rem 0; }
+.flash.error   { background: #fde2e2; color: #8a1f1f; border: 1px solid #f7b6b6; }
+.flash.success { background: #e2f7e6; color: #1b5e20; border: 1px solid #a9e5b6; }
+
+/* Finance layout */
+.two-col {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 768px) {
+  .two-col { grid-template-columns: 1fr 1fr; }
+}
+
+/* Service grid */
+.service-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+/* --- home quick-link cards --- */
+.feature-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  margin: 1rem 0 1.5rem;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,.06);
+}
+.link-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.link-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(0,0,0,.10);
+}
+.muted { color: var(--muted); }
+
+
+/* === Inventory Page Styles === */
+.inventory-grid {
+  margin-top: 0.5rem;
+}
+
+.vehicle-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+.vehicle-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 0.85rem;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 0.6rem;
+}
+
+.vehicle-media {
+  display: block;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  border-radius: 10px;
+}
+.vehicle-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.vehicle-title {
+  font-size: 1rem;
+  margin: 0.25rem 0 0.35rem;
+}
+.vehicle-title a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.vehicle-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.25rem 0.75rem;
+  margin: 0.25rem 0 0.5rem;
+}
+.vehicle-meta dt {
+  font-weight: 600;
+}
+.vehicle-meta dd {
+  margin: 0;
+}
+
+.btn.secondary {
+  display: inline-block;
+  padding: 0.5rem 0.75rem;
+  border-radius: 10px;
+  background: #f4f4f5;
+  text-decoration: none;
+  color: #111;
+  border: 1px solid #e5e7eb;
+}
+
+.muted {
+  color: #666;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .vehicle-card {
+    background: #111;
+    box-shadow: none;
+    border: 1px solid #222;
+  }
+  .btn.secondary {
+    background: #1f2937;
+    color: #f9fafb;
+    border-color: #374151;
+  }
+  .muted {
+    color: #9ca3af;
+  }
+}
+
+.inventory-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  margin: 1rem 0 2rem;
+}
+
+.vehicle-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 1px 3px rgba(0,0,0,.06);
+}
+
+.vehicle-media img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+.vehicle-info {
+  padding: .75rem .9rem;
+  display: grid;
+  gap: .35rem;
+}
+
+.vehicle-title {
+  font-size: 1rem;
+  margin: 0.25rem 0;
+}
+
+.price {
+  font-weight: 700;
+}
+
+.miles {
+  color: var(--muted);
+}
+
+.btn.secondary {
+  padding: .5rem .75rem;
+  border-radius: 10px;
+  background: #e9eef7;
+  color: var(--brand-dark);
+  text-decoration: none;
+}
+
+.muted {
+  color: #666;
+}

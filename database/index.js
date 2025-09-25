@@ -1,26 +1,33 @@
 const { Pool } = require("pg");
-require("dotenv").config(); // Load environment variables
+require("dotenv").config();
 
-// Check if we're in development or production environment
-const isDev = process.env.NODE_ENV === "development";
+if (!process.env.DATABASE_URL) {
+  console.error("❌ DATABASE_URL is not set. Put it in .env at project root.");
+  process.exit(1);
+}
 
-// Create a new pool (database connection)
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL, // Connection string from .env
-  ssl: isDev ? false : { rejectUnauthorized: false }, // SSL settings based on the environment
+  connectionString: process.env.DATABASE_URL,
+  // Render requires SSL; this also works locally when connecting to Render DB
+  ssl: { rejectUnauthorized: false },
 });
 
-// Query function to interact with the database
+// Log which database we are connecting to
+try {
+  const u = new URL(process.env.DATABASE_URL);
+  console.log(`🔌 DB target → host:${u.hostname} port:${u.port} db:${u.pathname.slice(1)}`);
+} catch (e) {
+  console.log("⚠️ Could not parse DATABASE_URL");
+}
+
 async function query(text, params) {
   try {
     const res = await pool.query(text, params);
-    console.log("executed query:", text); // Log executed query for debugging
     return res;
   } catch (err) {
-    console.error("error in query:", text, err); // Log error if query fails
+    console.error("DB query error:", text, err);
     throw err;
   }
 }
 
 module.exports = { pool, query };
-

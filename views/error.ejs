@@ -1,9 +1,6 @@
-<%- include("partials/header", { nav }) %>
-
-<main id="main" class="container error-page">
-  <h1>Error <%= status %></h1>
-  <p><%= message %></p>
-  <p><a href="/">Return to Home</a></p>
-</main>
-
-<%- include("partials/footer") %>
+<!-- views/error.ejs -->
+<section class="container error-page">
+  <h1>Error <%= status || 500 %></h1>
+  <p><%= message || "Something went wrong on the server." %></p>
+  <p><a class="pill" href="/">Return to Home</a></p>
+</section>

@@ -5,11 +5,11 @@ const router = express.Router()
 // Controllers
 const invController = require("../controllers/invcontroller")
 
-// Validators (new file you created)
-const validators = require("./validators")
+// Validators (correct path)
+const { classificationRules, vehicleRules, checkData } = require("../utilities/validators")
 
 /* ===============================
- * Existing routes (keep these)
+ * Existing routes
  * =============================== */
 
 // Hub (list classifications)
@@ -27,7 +27,7 @@ router.get("/trigger-error", (_req, _res, next) => {
 })
 
 /* ===============================
- * New Assignment 4 routes
+ * Assignment 4 routes
  * =============================== */
 
 // Management hub
@@ -37,7 +37,8 @@ router.get("/", invController.management)
 router.get("/add-classification", invController.showAddClassification)
 router.post(
   "/add-classification",
-  validators.validateClassification,
+  classificationRules(),
+  checkData,
   invController.addClassification
 )
 
@@ -45,7 +46,8 @@ router.post(
 router.get("/add-vehicle", invController.showAddVehicle)
 router.post(
   "/add-vehicle",
-  validators.validateVehicle,
+  vehicleRules(),
+  checkData,
   invController.addVehicle
 )
 

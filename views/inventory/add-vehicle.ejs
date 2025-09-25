@@ -1,55 +1,102 @@
 <main class="container">
-  <h1>Add Vehicle</h1>
+  <h1><%= title %></h1>
 
-  <% if (locals.flash?.error && flash.error.length) { %>
+  <% if (flash.error && flash.error.length) { %>
     <div class="flash error" role="alert"><%= flash.error[0] %></div>
+  <% } %>
+  <% if (flash.success && flash.success.length) { %>
+    <div class="flash success" role="status"><%= flash.success[0] %></div>
   <% } %>
 
   <form method="post" action="/inv/add-vehicle" novalidate>
+    <!-- Make -->
     <label for="inv_make">Make</label>
     <input id="inv_make" name="inv_make" type="text" minlength="2" required
+           aria-describedby="invMakeError"
            value="<%= values?.inv_make || '' %>">
-    <% if (errors?.inv_make) { %><span class="error"><%= errors.inv_make %></span><% } %>
+    <% if (errors?.inv_make) { %>
+      <span id="invMakeError" class="error"><%= errors.inv_make %></span>
+    <% } %>
 
+    <!-- Model -->
     <label for="inv_model">Model</label>
     <input id="inv_model" name="inv_model" type="text" required
+           aria-describedby="invModelError"
            value="<%= values?.inv_model || '' %>">
-    <% if (errors?.inv_model) { %><span class="error"><%= errors.inv_model %></span><% } %>
+    <% if (errors?.inv_model) { %>
+      <span id="invModelError" class="error"><%= errors.inv_model %></span>
+    <% } %>
 
+    <!-- Year -->
+    <label for="inv_year">Year</label>
+    <input id="inv_year" name="inv_year" type="number" min="1900" max="2100" step="1" required
+           aria-describedby="invYearError"
+           value="<%= values?.inv_year ?? '' %>">
+    <% if (errors?.inv_year) { %>
+      <span id="invYearError" class="error"><%= errors.inv_year %></span>
+    <% } %>
+
+    <!-- Description -->
     <label for="inv_description">Description</label>
-    <textarea id="inv_description" name="inv_description" minlength="10" required><%= values?.inv_description || '' %></textarea>
-    <% if (errors?.inv_description) { %><span class="error"><%= errors.inv_description %></span><% } %>
+    <textarea id="inv_description" name="inv_description" minlength="10" required
+              aria-describedby="invDescError"><%= values?.inv_description || '' %></textarea>
+    <% if (errors?.inv_description) { %>
+      <span id="invDescError" class="error"><%= errors.inv_description %></span>
+    <% } %>
 
+    <!-- Image -->
     <label for="inv_image">Image Path</label>
     <input id="inv_image" name="inv_image" type="text" required
            pattern="^\/images\/[^ ]+\.(jpg|jpeg|png|webp)$"
+           aria-describedby="invImageError"
            value="<%= values?.inv_image || '/images/no-image.png' %>">
-    <% if (errors?.inv_image) { %><span class="error"><%= errors.inv_image %></span><% } %>
+    <% if (errors?.inv_image) { %>
+      <span id="invImageError" class="error"><%= errors.inv_image %></span>
+    <% } %>
 
+    <!-- Thumbnail -->
     <label for="inv_thumbnail">Thumbnail Path</label>
     <input id="inv_thumbnail" name="inv_thumbnail" type="text" required
            pattern="^\/images\/[^ ]+\.(jpg|jpeg|png|webp)$"
+           aria-describedby="invThumbError"
            value="<%= values?.inv_thumbnail || '/images/no-image-tn.png' %>">
-    <% if (errors?.inv_thumbnail) { %><span class="error"><%= errors.inv_thumbnail %></span><% } %>
+    <% if (errors?.inv_thumbnail) { %>
+      <span id="invThumbError" class="error"><%= errors.inv_thumbnail %></span>
+    <% } %>
 
+    <!-- Price -->
     <label for="inv_price">Price</label>
     <input id="inv_price" name="inv_price" type="number" min="0" step="0.01" required
+           aria-describedby="invPriceError"
            value="<%= values?.inv_price ?? '' %>">
-    <% if (errors?.inv_price) { %><span class="error"><%= errors.inv_price %></span><% } %>
+    <% if (errors?.inv_price) { %>
+      <span id="invPriceError" class="error"><%= errors.inv_price %></span>
+    <% } %>
 
-    <label for="inv_stock">Stock</label>
-    <input id="inv_stock" name="inv_stock" type="number" min="0" step="1" required
-           value="<%= values?.inv_stock ?? '' %>">
-    <% if (errors?.inv_stock) { %><span class="error"><%= errors.inv_stock %></span><% } %>
+    <!-- Miles (NOT stock) -->
+    <label for="inv_miles">Miles</label>
+    <input id="inv_miles" name="inv_miles" type="number" min="0" step="1" required
+           aria-describedby="invMilesError"
+           value="<%= values?.inv_miles ?? '' %>">
+    <% if (errors?.inv_miles) { %>
+      <span id="invMilesError" class="error"><%= errors.inv_miles %></span>
+    <% } %>
 
+    <!-- Color -->
     <label for="inv_color">Color</label>
     <input id="inv_color" name="inv_color" type="text" pattern="[A-Za-z ]{3,30}" required
+           aria-describedby="invColorError"
            value="<%= values?.inv_color || '' %>">
-    <% if (errors?.inv_color) { %><span class="error"><%= errors.inv_color %></span><% } %>
+    <% if (errors?.inv_color) { %>
+      <span id="invColorError" class="error"><%= errors.inv_color %></span>
+    <% } %>
 
+    <!-- Classification dropdown (from utilities.buildClassificationList) -->
     <label for="classificationList">Classification</label>
     <%- classificationSelect %>
-    <% if (errors?.classification_id) { %><span class="error"><%= errors.classification_id %></span><% } %>
+    <% if (errors?.classification_id) { %>
+      <span class="error"><%= errors.classification_id %></span>
+    <% } %>
 
     <button type="submit">Save</button>
   </form>

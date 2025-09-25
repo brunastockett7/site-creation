@@ -1,14 +1,61 @@
+<main class="container">
+  <h1><%= title || 'Finance Options' %></h1>
+  <p class="lead">Affordable payments, simple terms, and no surprises.</p>
 
-    <section class="info-block">
-      <h2>Financing Requirements</h2>
-      <ul>
-        <li>Government-issued ID</li>
-        <li>Proof of income (last 2 pay stubs or 3 months bank statements)</li>
-        <li>Proof of residence (utility bill or lease)</li>
-        <li>Down payment (optional, improves approval &amp; rate)</li>
-        <li>Completed credit application (online or in store)</li>
-      </ul>
-      <p>Most decisions in minutes. No prepayment penalties. APR varies by credit profile.</p>
-      <a class="pill" href="#">Start Application</a>
-    </section>
+  <!-- Financing options -->
+  <section aria-label="Financing options">
+    <div class="two-col">
+      <article class="card">
+        <h2>Leasing</h2>
+        <ul>
+          <li>Lower monthly payments</li>
+          <li>Drive a newer vehicle more often</li>
+          <li>Factory warranty coverage during the term</li>
+        </ul>
+        <p>Ideal if you drive average miles and like the latest features.</p>
+      </article>
+
+      <article class="card">
+        <h2>Traditional Loan</h2>
+        <ul>
+          <li>Own the vehicle at the end of the term</li>
+          <li>No mileage restrictions</li>
+          <li>Pay off early anytime without penalties</li>
+        </ul>
+        <p>Great if you keep cars longer or put on higher mileage.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- Requirements (your original list, preserved) -->
+  <section aria-labelledby="req">
+    <h2 id="req">Financing Requirements</h2>
+    <ul>
+      <li>Government-issued ID</li>
+      <li>Proof of income (last 2 pay stubs or 3 months bank statements)</li>
+      <li>Proof of residence (utility bill or lease)</li>
+      <li>Down payment (optional, improves approval &amp; rate)</li>
+      <li>Completed credit application (online or in store)</li>
+    </ul>
+    <p>Most decisions in minutes. No prepayment penalties. APR varies by credit profile.</p>
+  </section>
+
+  <!-- Apply / Pre-qualify -->
+  <section class="card" aria-labelledby="apply">
+    <h2 id="apply">Get Pre-Qualified</h2>
+    <p>Start with a soft credit check that doesn’t impact your score.</p>
+    <!-- If you later add a real route for an application form, point to it here -->
+    <p>
+      <a class="btn" href="mailto:finance@csemotors.example?subject=Finance%20Application">
+        Apply by Email
+      </a>
+    </p>
+  </section>
+
+  <!-- Contact -->
+  <section class="card" aria-labelledby="contact">
+    <h2 id="contact">Questions?</h2>
+    <p>Email <a href="mailto:finance@csemotors.example">finance@csemotors.example</a> or call (555) 123-4567.</p>
+  </section>
+</main>
 

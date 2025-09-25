@@ -1,21 +1,14 @@
-const utilities = require("../utilities/")
+// controllers/basecontroller.js
 
 const baseController = {}
 
-/* ***********************
- *  Build home page
- *************************/
-baseController.buildHome = async function (req, res, next) {
-  try {
-    const nav = await utilities.getNav()
-    res.render("index", {
-      title: "CSE Motors — Home",
-      description: "Shop, finance, and service with transparent pricing.",
-      nav,
-    })
-  } catch (err) {
-    next(err)
-  }
+/* Build Home (no DB calls so it never 500s) */
+baseController.buildHome = function (_req, res) {
+  // res.locals.nav is already set by your global nav middleware in server.js
+  res.render("index", {
+    title: "CSE Motors — Home",
+    description: "Shop, finance, and service with transparent pricing.",
+  })
 }
 
 module.exports = baseController

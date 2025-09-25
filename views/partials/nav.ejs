@@ -4,7 +4,11 @@
     <li><a href="/">Home</a></li>
 
     <!-- Inventory classifications come from the DB -->
-    <%- nav %> <!-- Directly include the HTML from utilities.getNav() -->
+    <% if (nav && nav.length > 0) { %>
+      <% nav.forEach(item => { %>
+        <li><a href="/inv/type/<%= item.classification_id %>"><%= item.classification_name %></a></li>
+      <% }) %>
+    <% } %>
 
     <!-- Finance and Service stay static -->
     <li><a href="/finance">Financing</a></li>

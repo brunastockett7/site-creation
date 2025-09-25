@@ -2,17 +2,18 @@ const invModel = require("../models/inventory-model")
 const utilities = require("../utilities/")
 
 /* ***************************
- *  Show hub page (no items yet)
+ *  Show hub page (/inv/type) – list ALL vehicles
  * *************************** */
 async function classificationHub(_req, res, next) {
   try {
     const nav = await utilities.getNav()
+    const items = await invModel.getAllInventory()   // <-- fetch everything
     res.render("inventory", {
-      title: "Inventory — Browse by Classification",
-      description: "Choose a category from the navigation.",
+      title: "Inventory — All Vehicles",
+      description: "Browse all vehicles on the lot.",
       nav,
-      items: [],          // nothing until a classification is picked
-      utilities           // so inventory.ejs can call utilities.formatPrice
+      items,
+      utilities
     })
   } catch (e) {
     next(e)

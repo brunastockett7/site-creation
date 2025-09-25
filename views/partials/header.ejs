@@ -3,11 +3,11 @@
     <h1 class="brand"><a href="/">CSE Motors</a></h1>
 
     <nav class="primary-actions" aria-label="Primary">
-      <!-- Dynamic inventory categories from DB -->
-      <%- include('partials/nav') %>
+      <!-- Render dynamic nav categories from DB -->
+      <%- nav && nav.length ? nav : '' %> <!-- Render nav if available; otherwise, show nothing -->
 
       <!-- Static links -->
-      <a class="pill" href="/finance">Finance</a>
+      <a class="pill" href="/finance">Financing</a>
       <a class="pill" href="/service">Service</a>
     </nav>
   </div>

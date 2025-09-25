@@ -1,8 +1,11 @@
 <main class="container">
-  <h1>Add Classification</h1>
+  <h1><%= title %></h1>
 
-  <% if (locals.flash?.error && flash.error.length) { %>
+  <% if (flash.error && flash.error.length) { %>
     <div class="flash error" role="alert"><%= flash.error[0] %></div>
+  <% } %>
+  <% if (flash.success && flash.success.length) { %>
+    <div class="flash success" role="status"><%= flash.success[0] %></div>
   <% } %>
 
   <p>Only letters and numbers. No spaces or special characters.</p>
@@ -16,10 +19,11 @@
       pattern="[A-Za-z0-9]{3,30}"
       required
       title="3–30 letters/numbers, no spaces"
+      aria-describedby="classificationHelp"
       value="<%= values?.classification_name || '' %>"
     />
     <% if (errors?.classification_name) { %>
-      <span class="error"><%= errors.classification_name %></span>
+      <span class="error" id="classificationHelp"><%= errors.classification_name %></span>
     <% } %>
 
     <button type="submit">Save</button>
@@ -27,8 +31,11 @@
 </main>
 
 <script>
-  // Basic client-side validity reporting (frontend checklist)
+  // Basic client-side validity reporting
   document.querySelector("form").addEventListener("submit", (e) => {
-    if (!e.target.checkValidity()) { e.preventDefault(); e.target.reportValidity(); }
+    if (!e.target.checkValidity()) {
+      e.preventDefault();
+      e.target.reportValidity();
+    }
   });
 </script>

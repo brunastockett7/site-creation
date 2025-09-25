@@ -10,6 +10,18 @@ async function getClassifications() {
   return rows
 }
 
+/* ------------------------------
+ * Get ALL vehicles (for hub /inv/type)
+ * ------------------------------ */
+async function getAllInventory() {
+  const { rows } = await db.query(
+    `SELECT inv_id, inv_make, inv_model, inv_year, inv_price, inv_miles, inv_image
+     FROM inventory
+     ORDER BY inv_year DESC, inv_make, inv_model`
+  )
+  return rows
+}
+
 // Get inventory by classification id (now includes miles)
 async function getInventoryByClassification(classificationId) {
   const { rows } = await db.query(
@@ -26,7 +38,7 @@ async function getInventoryByClassification(classificationId) {
 async function getVehicleById(invId) {
   const { rows } = await db.query(
     `SELECT inv_id, inv_make, inv_model, inv_year, inv_price,
-            inv_miles, inv_description, inv_image
+            inv_miles, inv_description, inv_image, inv_thumbnail, inv_color, classification_id
      FROM inventory
      WHERE inv_id = $1`,
     [invId]
@@ -35,7 +47,7 @@ async function getVehicleById(invId) {
 }
 
 /* ------------------------------
- * NEW: Insert classification
+ * Insert classification
  * ------------------------------ */
 async function insertClassification(classification_name) {
   const q = `INSERT INTO classification (classification_name)
@@ -45,29 +57,54 @@ async function insertClassification(classification_name) {
 }
 
 /* ------------------------------
- * NEW: Insert vehicle
+ * Insert vehicle (uses inv_year + inv_miles)
  * ------------------------------ */
 async function insertVehicle(v) {
   const q = `
     INSERT INTO inventory
-      (inv_make, inv_model, inv_description, inv_image, inv_thumbnail,
-       inv_price, inv_stock, inv_color, classification_id)
-    VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
+      (inv_make, inv_model, inv_year, inv_description, inv_image, inv_thumbnail,
+       inv_price, inv_miles, inv_color, classification_id)
+    VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
     RETURNING inv_id
   `
   const vals = [
-    v.inv_make, v.inv_model, v.inv_description, v.inv_image, v.inv_thumbnail,
-    v.inv_price, v.inv_stock, v.inv_color, v.classification_id
+    v.inv_make,
+    v.inv_model,
+    Number(v.inv_year),
+    v.inv_description,
+    v.inv_image,
+    v.inv_thumbnail,
+    Number(v.inv_price),
+    Number(v.inv_miles),
+    v.inv_color,
+    Number(v.classification_id),
   ]
   const { rows } = await db.query(q, vals)
   return rows[0].inv_id
 }
 
-// Export everything
-module.exports = { 
-  getClassifications, 
-  getInventoryByClassification, 
-  getVehicleById,
-  insertClassification,   // <-- added
-  insertVehicle           // <-- added
+/* ------------------------------
+ * Featured vehicles (latest N)
+ * ------------------------------ */
+async function getFeatured(limit = 6) {
+  const { rows } = await db.query(
+    `SELECT inv_id, inv_make, inv_model, inv_year, inv_price, inv_miles, inv_image
+     FROM inventory
+     ORDER BY inv_id DESC
+     LIMIT $1`,
+    [limit]
+  )
+  return rows
 }
+
+// Export everything
+module.exports = {
+  getClassifications,
+  getAllInventory,               // <-- added
+  getInventoryByClassification,
+  getVehicleById,
+  insertClassification,
+  insertVehicle,
+  getFeatured,
+}
+

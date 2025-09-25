@@ -1,55 +1,68 @@
-<section class="info-block">
-  <h2><%= title %></h2>
+<main class="container">
+  <h1><%= title || 'Inventory' %></h1>
+  <p class="lead">Explore our wide selection of vehicles, from new arrivals to pre-owned gems. Find your perfect match.</p>
+
+  <% if (flash?.error && flash.error.length) { %>
+    <div class="flash error" role="alert"><%= flash.error[0] %></div>
+  <% } %>
+  <% if (flash?.success && flash.success.length) { %>
+    <div class="flash success" role="status"><%= flash.success[0] %></div>
+  <% } %>
 
   <% if (!items || !items.length) { %>
-    <p>No inventory found for this classification.</p>
+    <p class="muted">
+      No inventory found for this classification.
+      <a href="/inv/type">Browse all vehicles</a>.
+    </p>
   <% } else { %>
-    <% function slug(s){ 
-         return String(s).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''); 
-       } %>
+    <section aria-label="Available Vehicles" class="inventory-grid">
+      <% 
+        const toSlug = s => String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+        const normalizeImg = (raw, v) => {
+          let r = raw && raw.trim() ? raw.trim() : `${toSlug(v.inv_make)}-${toSlug(v.inv_model)}-${v.inv_year || ''}.webp`;
+          r = r.replace(/^public[\\/]/, "").replace(/\\/g, "/");
+          if (!r.startsWith("/")) r = "/" + r;
+          if (!r.startsWith("/images/")) r = "/images/" + r.replace(/^\/?images\//, "");
+          return r;
+        };
 
-    <ul style="list-style:none;padding:0;margin:0;display:grid;gap:1rem">
-      <% items.forEach(it => { 
-           // Build a base filename (no extension)
-           const base = (it.inv_image && it.inv_image.trim())
-             ? it.inv_image.trim().replace(/\.(webp|jpg|jpeg|png)$/i,'')
-             : `${slug(it.inv_make)}-${slug(it.inv_model)}-${it.inv_year}`;
+        // Log the items to debug
+        console.log(items); 
       %>
 
-        <li class="info-block" style="background:#fff;padding:1rem;border-radius:8px;display:grid;grid-template-columns:120px 1fr;gap:1rem;align-items:center">
-          
-          <!-- Thumbnail image with fallbacks -->
-          <a href="/inv/detail/<%= it.inv_id %>">
-            <picture>
-              <source srcset="/images/<%= base %>.webp" type="image/webp">
-              <img
-                src="/images/<%= base %>.jpg"
-                alt="<%= it.inv_year %> <%= it.inv_make %> <%= it.inv_model %>"
-                style="width:120px;height:auto;display:block;border-radius:6px;object-fit:cover"
-                onerror="this.onerror=null;
-                         this.src='/images/<%= base %>.png';
-                         this.onerror=function(){ this.src='/images/placeholder.png'; };"
-              >
-            </picture>
-          </a>
+      <ul class="vehicle-list" role="list">
+        <% items.forEach(v => { 
+            const img = normalizeImg(v.inv_thumbnail || v.inv_image, v);
+            const alt = `Photo of ${v.inv_year} ${v.inv_make} ${v.inv_model}`;
+        %>
+          <li class="vehicle-card">
+            <a class="vehicle-media" href="/inv/detail/<%= v.inv_id %>">
+              <img src="<%= img %>" alt="<%= alt %>" loading="lazy" decoding="async" />
+            </a>
 
-          <!-- Vehicle info -->
-          <div>
-            <h3 style="margin:.25rem 0">
-              <a href="/inv/detail/<%= it.inv_id %>" style="text-decoration:none;color:inherit">
-                <%= it.inv_year %> <%= it.inv_make %> <%= it.inv_model %>
-              </a>
-            </h3>
-            <p><strong>Price:</strong> <%= utilities.formatPrice(it.inv_price) %></p>
-            <p class="miles" style="margin:.1rem 0;color:#555;">
-              <strong>Mileage:</strong>
-              <%= typeof it.inv_miles !== "undefined" && it.inv_miles !== null 
-                    ? utilities.formatMiles(it.inv_miles)
-                    : "N/A" %>
-            </p>
-          </div>
-        </li>
-      <% }) %>
-    </ul>
+            <div class="vehicle-info">
+              <h3 class="vehicle-title">
+                <a href="/inv/detail/<%= v.inv_id %>">
+                  <%= v.inv_year %> <%= v.inv_make %> <%= v.inv_model %>
+                </a>
+              </h3>
+
+              <p class="price"><%= utilities.formatPrice(v.inv_price) %></p>
+              <p class="miles"><%= utilities.formatMiles(v.inv_miles) %></p>
+
+              <a class="btn secondary" href="/inv/detail/<%= v.inv_id %>">View Details</a>
+            </div>
+          </li>
+        <% }) %>
+      </ul>
+    </section>
   <% } %>
-</section>
+
+  <!-- Call to Action for Browsing More Vehicles -->
+  <section class="card">
+    <h2>Browse More Vehicles</h2>
+    <p>If you're looking for more options, explore our full inventory.</p>
+    <a class="btn" href="/inv/type">Browse All Vehicles</a>
+  </section>
+
+</main>

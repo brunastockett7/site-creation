@@ -1,11 +1,6 @@
-<%- include("partials/header", { nav }) %>
-
-<main id="main" class="container detail-page">
+<div class="detail-page">
   <h1 class="page-title"><%= title %></h1>
-  
-  <section class="detail-wrapper">
-    <%- content %>
-  </section>
-</main>
-
-<%- include("partials/footer") %>
+  <div class="detail-wrapper">
+    <%- content %>  <!-- HTML from utilities.buildDetailView(...) -->
+  </div>
+</div>
