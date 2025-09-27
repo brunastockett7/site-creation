@@ -18,21 +18,17 @@
     <section aria-label="Available Vehicles" class="inventory-grid">
       <% 
         const toSlug = s => String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+        
         const normalizeImg = (raw, v) => {
           let r = raw && raw.trim() ? raw.trim() : `${toSlug(v.inv_make)}-${toSlug(v.inv_model)}-${v.inv_year || ''}.webp`;
-          r = r.replace(/^public[\\/]/, "").replace(/\\/g, "/");
-          if (!r.startsWith("/")) r = "/" + r;
-          if (!r.startsWith("/images/")) r = "/images/" + r.replace(/^\/?images\//, "");
+          if (!r.startsWith("/images/")) r = "/images/" + r;
           return r;
         };
-
-        // Log the items to debug
-        console.log(items); 
       %>
 
       <ul class="vehicle-list" role="list">
         <% items.forEach(v => { 
-            const img = normalizeImg(v.inv_thumbnail || v.inv_image, v);
+            const img = normalizeImg(v.inv_image, v);  // Normalize image path
             const alt = `Photo of ${v.inv_year} ${v.inv_make} ${v.inv_model}`;
         %>
           <li class="vehicle-card">
@@ -58,7 +54,6 @@
     </section>
   <% } %>
 
-  <!-- Call to Action for Browsing More Vehicles -->
   <section class="card">
     <h2>Browse More Vehicles</h2>
     <p>If you're looking for more options, explore our full inventory.</p>

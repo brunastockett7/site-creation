@@ -1,17 +1,16 @@
 <nav class="site-nav" aria-label="Primary">
   <ul id="primary-nav" class="nav-list">
-    <!-- Home is static -->
+    <!-- Home -->
     <li><a href="/">Home</a></li>
 
-    <!-- Inventory classifications come from the DB -->
-    <% if (nav && nav.length > 0) { %>
-      <% nav.forEach(item => { %>
-        <li><a href="/inv/type/<%= item.classification_id %>"><%= item.classification_name %></a></li>
-      <% }) %>
-    <% } %>
+    <!-- Inventory (no dropdown) -->
+    <li>
+      <a href="/inv/type">Inventory</a>
+    </li>
 
-    <!-- Finance and Service stay static -->
+    <!-- Static links -->
     <li><a href="/finance">Financing</a></li>
     <li><a href="/service">Service</a></li>
   </ul>
 </nav>
+

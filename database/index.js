@@ -1,24 +1,23 @@
 const { Pool } = require("pg");
 require("dotenv").config();
 
-if (!process.env.DATABASE_URL) {
-  console.error("❌ DATABASE_URL is not set. Put it in .env at project root.");
+if (!process.env.PGHOST) {
+  console.error("❌ PGHOST is not set. Check your .env file at the project root.");
   process.exit(1);
 }
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  // Render requires SSL; this also works locally when connecting to Render DB
+  host: process.env.PGHOST,
+  port: process.env.PGPORT,
+  database: process.env.PGDATABASE,
+  user: process.env.PGUSER,
+  password: process.env.PGPASSWORD,
   ssl: { rejectUnauthorized: false },
 });
 
-// Log which database we are connecting to
-try {
-  const u = new URL(process.env.DATABASE_URL);
-  console.log(`🔌 DB target → host:${u.hostname} port:${u.port} db:${u.pathname.slice(1)}`);
-} catch (e) {
-  console.log("⚠️ Could not parse DATABASE_URL");
-}
+console.log(
+  `🔌 DB target → host:${process.env.PGHOST} port:${process.env.PGPORT} db:${process.env.PGDATABASE}`
+);
 
 async function query(text, params) {
   try {

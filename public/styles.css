@@ -1,3 +1,4 @@
+
 /* ---------- Base / Theme (keep yours or this minimal set) ---------- */
 :root{
   --bg:#f8fafc; --text:#111827; --muted:#4b5563;
@@ -381,22 +382,15 @@ a:focus, button:focus, [tabindex]:focus {
   box-shadow: 0 8px 22px rgba(0,0,0,.10);
 }
 
-/* Inventory gallery */
+/* === Inventory Page Styles (FIXED LAYOUT) === */
+
+/* ✅ The main wrapper should NOT be a grid */
 .inventory-grid {
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   margin: 1rem 0 2rem;
+  /* remove display:grid from here */
+  display: block;
 }
-.vehicle-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 1px 3px rgba(0,0,0,.06);
-}
+
 .vehicle-media img {
   width: 100%;
   height: 180px;
@@ -477,30 +471,18 @@ a:focus, button:focus, [tabindex]:focus {
 }
 .muted { color: var(--muted); }
 
-
-/* === Inventory Page Styles === */
-.inventory-grid {
-  margin-top: 0.5rem;
-}
-
+/* ✅ The UL is the actual grid */
 .vehicle-list {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 0 auto;
   display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  justify-items: center; /* centers cards evenly */
+  max-width: 1200px;     /* keeps layout contained */
 }
 
-.vehicle-card {
-  background: #fff;
-  border-radius: 12px;
-  padding: 0.85rem;
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
-  display: grid;
-  grid-template-rows: auto 1fr;
-  gap: 0.6rem;
-}
 
 .vehicle-media {
   display: block;
@@ -553,28 +535,7 @@ a:focus, button:focus, [tabindex]:focus {
 
 /* Dark mode support */
 @media (prefers-color-scheme: dark) {
-  .vehicle-card {
-    background: #111;
-    box-shadow: none;
-    border: 1px solid #222;
-  }
-  .btn.secondary {
-    background: #1f2937;
-    color: #f9fafb;
-    border-color: #374151;
-  }
-  .muted {
-    color: #9ca3af;
-  }
-}
-
-.inventory-grid {
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  margin: 1rem 0 2rem;
-}
-
+ /* ✅ Each card keeps same design */
 .vehicle-card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -583,6 +544,17 @@ a:focus, button:focus, [tabindex]:focus {
   display: flex;
   flex-direction: column;
   box-shadow: 0 1px 3px rgba(0,0,0,.06);
+  width: 100%;
+  max-width: 340px; /* consistent width across all cards */
+}
+  .btn.secondary {
+    background: #1f2937;
+    color: #f9fafb;
+    border-color: #374151;
+  }
+  .muted {
+    color: #9ca3af;
+  }
 }
 
 .vehicle-media img {
@@ -622,3 +594,4 @@ a:focus, button:focus, [tabindex]:focus {
 .muted {
   color: #666;
 }
+

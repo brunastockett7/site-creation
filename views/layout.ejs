@@ -11,9 +11,9 @@
     <!-- Brand on top -->
     <h1 class="brand"><a href="/">CSE Motors</a></h1>
 
-    <!-- Navigation comes from res.locals.nav -->
+    <!-- Navigation (static include instead of raw nav dump) -->
     <nav class="main-nav">
-      <%- nav %>
+      <%- include('partials/nav') %>
     </nav>
   </header>
 

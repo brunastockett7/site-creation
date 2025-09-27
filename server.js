@@ -86,7 +86,8 @@ app.use((req, res, next) => {
   next();
 });
 
-/* ------------------- GLOBAL NAV MIDDLEWARE ------------------- */
+/* ------------------- GLOBAL NAV MIDDLEWARE -------------------*/
+
 app.use(async (_req, res, next) => {
   try {
     res.locals.nav = await utilities.getNav(); // build from DB
