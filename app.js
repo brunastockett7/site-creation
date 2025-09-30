@@ -62,4 +62,13 @@ app.use((req, res) => {
   res.status(404).render('404', { title: 'Not Found', description: 'Page not found.' });
 });
 
+// 500 error handler (must have 4 params)
+app.use((err, req, res, next) => {
+  console.error(err.stack); // log to server console
+  res.status(500).render('500', {
+    title: 'Server Error',
+    description: 'Something went wrong on our end. Please try again later.'
+  });
+});
+
 app.listen(PORT, () => console.log(`Server listening on ${PORT}`));
