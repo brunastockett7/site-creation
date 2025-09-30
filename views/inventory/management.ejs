@@ -1,15 +1,59 @@
-<main class="container">
-  <h1><%= title %></h1>
+<main class="container mgmt">
+  <h1 class="page-title"><%= title %></h1>
 
-  <% if (flash.error && flash.error.length) { %>
-    <div class="flash error" role="alert"><%= flash.error[0] %></div>
-  <% } %>
-  <% if (flash.success && flash.success.length) { %>
+  <!-- flash (session message passing) -->
+  <% if (flash?.success?.length) { %>
     <div class="flash success" role="status"><%= flash.success[0] %></div>
   <% } %>
+  <% if (flash?.error?.length) { %>
+    <div class="flash error" role="alert"><%= flash.error[0] %></div>
+  <% } %>
 
-  <ul class="management-links">
-    <li><a class="btn" href="/inv/add-classification">➕ Add New Classification</a></li>
-    <li><a class="btn" href="/inv/add-vehicle">🚗 Add New Vehicle</a></li>
-  </ul>
+  <!-- admin quick actions -->
+  <div class="mgmt-actions">
+    <a class="btn" href="/inv/add-classification">➕ Add New Classification</a>
+    <a class="btn" href="/inv/add-vehicle">🚗 Add New Vehicle</a>
+    <a class="btn ghost" href="/inv/type">🔎 View Inventory Hub</a>
+  </div>
+
+  <!-- company overview (no images) -->
+  <section class="panel">
+    <h2>About CSE Motors</h2>
+    <p>The Management Hub gives our team the tools to keep CSE Motors running smoothly. 
+       From adding new classifications to updating vehicles, everything you need to 
+       organize and grow our inventory is available in one place.</p>
+    <ul class="ticks">
+      <li>Family-first service, no-pressure buying</li>
+      <li>Every vehicle inspected & reconditioned</li>
+      <li>Same-day finance decisions (with approved credit)</li>
+    </ul>
+  </section>
+
+  <!-- simple stats (keeps it admin-y, no photos) -->
+  <section class="stats">
+    <div class="stat">
+      <span class="stat-num"><%= (classifications?.length || 0) %></span>
+      <span class="stat-label">Classifications</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num"><%= totalVehicles ?? 0 %></span>
+      <span class="stat-label">Total Vehicles</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num"><%= (recent?.length || 0) %></span>
+      <span class="stat-label">Recent Adds</span>
+    </div>
+  </section>
+
+  <!-- milestones (creative, rubric-safe) -->
+  <section class="panel">
+    <h2>Milestones</h2>
+    <ol class="timeline">
+      <li><span>2012</span> Opened our first bay and sold our first 10 vehicles.</li>
+      <li><span>2016</span> Added certified service center and warranty partners.</li>
+      <li><span>2020</span> Launched online financing pre-approval.</li>
+      <li><span>2024</span> Expanded inventory sourcing and reconditioning lab.</li>
+    </ol>
+  </section>
+
 </main>

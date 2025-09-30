@@ -98,12 +98,6 @@ app.use(async (_req, res, next) => {
   next();
 });
 
-/* Show the 500 trigger link only on inventory pages (/inv/*) */
-app.use((req, res, next) => {
-  res.locals.showErrorLink = req.path.startsWith("/inv");
-  next();
-});
-
 /* ------------------- ROUTES ------------------- */
 
 // Home (MVC via controller)

@@ -595,3 +595,42 @@ a:focus, button:focus, [tabindex]:focus {
   color: #666;
 }
 
+/* --- Management (company hub, no images) --- */
+.mgmt .page-title{ text-align:center; margin:1rem 0 1.25rem; }
+.mgmt-actions{ display:flex; gap:.75rem; justify-content:center; flex-wrap:wrap; margin-bottom:1.25rem; }
+.btn.ghost{ background:#eef2ff; color:#1e3a8a; border:1px solid #c7d2fe; }
+
+.panel{
+  background: var(--surface);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:1rem 1.25rem;
+  box-shadow: 0 6px 18px rgba(0,0,0,.06);
+  max-width: 900px; margin: 0 auto 1rem;
+}
+
+.ticks{ list-style:none; padding:0; margin:.5rem 0 0; }
+.ticks li{ padding:.3rem 0 .3rem 1.2rem; position:relative; }
+.ticks li::before{ content:"✓"; position:absolute; left:0; color:#2563eb; font-weight:800; }
+
+.stats{
+  display:flex; gap:1rem; flex-wrap:wrap; justify-content:center;
+  margin: 0 auto 1.25rem; max-width:900px;
+}
+.stat{
+  min-width:150px; text-align:center; background:var(--surface);
+  border:1px solid var(--border); border-radius:12px; padding:.75rem 1rem;
+  box-shadow: 0 6px 18px rgba(0,0,0,.06);
+}
+.stat-num{ display:block; font-weight:800; font-size:1.4rem; }
+.stat-label{ color:var(--muted); font-size:.9rem; }
+
+.timeline{ counter-reset: step; list-style:none; padding:0; margin:.5rem 0 0; }
+.timeline li{ padding:.35rem 0 .35rem 2.1rem; position:relative; }
+.timeline li::before{
+  counter-increment: step; content: counter(step);
+  position:absolute; left:.2rem; top:.2rem;
+  width:1.2rem; height:1.2rem; line-height:1.2rem; text-align:center;
+  border-radius:999px; background:#e9eef7; color:#1e3a8a; font-weight:700;
+}
+.timeline li span{ font-weight:700; color:#1e3a8a; margin-right:.35rem; }

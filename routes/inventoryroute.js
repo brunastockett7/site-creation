@@ -21,17 +21,14 @@ router.get("/type/:classificationId", invController.listByClassification)
 // Vehicle detail by id
 router.get("/detail/:inv_id", invController.buildById)
 
-// Footer-triggered error for rubric (intentional 500)
-router.get("/trigger-error", (_req, _res, next) => {
-  next(new Error("Forced test error from footer link"))
-})
-
 /* ===============================
  * Assignment 4 routes
  * =============================== */
 
 // Management hub
-router.get("/", invController.management)
+router.get("/", invController.management)            // /inv/
+router.get("/management", invController.management)  // /inv/management
+
 
 // Add classification
 router.get("/add-classification", invController.showAddClassification)

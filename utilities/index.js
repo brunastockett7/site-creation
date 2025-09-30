@@ -14,6 +14,7 @@ Util.getNav = async function () {
     list += '<li><a href="/inv/type" title="Inventory hub">Inventory</a></li>'
     list += '<li><a href="/finance" title="Financing options">Finance</a></li>'
     list += '<li><a href="/service" title="Service center">Service</a></li>'
+    list += '<li><a href="/inv/management" title="Inventory management">Management</a></li>'
     data.forEach((row) => {
       list += `<li><a href="/inv/type/${row.classification_id}"
                  title="See ${row.classification_name} inventory">
@@ -22,7 +23,7 @@ Util.getNav = async function () {
     list += "</ul>"
     return list
   } catch {
-    return '<ul class="nav-list"><li><a href="/">Home</a></li><li><a href="/inv/type">Inventory</a></li><li><a href="/finance">Finance</a></li><li><a href="/service">Service</a></li></ul>'
+    return '<ul class="nav-list"><li><a href="/">Home</a></li><li><a href="/inv/type">Inventory</a></li><li><a href="/finance">Finance</a></li><li><a href="/service">Service</a></li><li><a href="/inv/management">Management</a></li></ul>'
   }
 }
 

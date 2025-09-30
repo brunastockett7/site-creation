@@ -10,7 +10,8 @@
 
   <p>Only letters and numbers. No spaces or special characters.</p>
 
-  <form method="post" action="/inv/add-classification" novalidate>
+  <!-- ✅ added id -->
+  <form id="add-classification-form" method="post" action="/inv/add-classification" novalidate>
     <label for="classification_name">Classification Name</label>
     <input
       id="classification_name"
@@ -30,12 +31,6 @@
   </form>
 </main>
 
-<script>
-  // Basic client-side validity reporting
-  document.querySelector("form").addEventListener("submit", (e) => {
-    if (!e.target.checkValidity()) {
-      e.preventDefault();
-      e.target.reportValidity();
-    }
-  });
-</script>
+<!-- ✅ point to shared client-side validation script -->
+<script src="/js/client-validation.js"></script>
+

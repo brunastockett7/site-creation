@@ -7,7 +7,7 @@ const utilities = require("../utilities/")
 async function classificationHub(_req, res, next) {
   try {
     const nav = await utilities.getNav()
-    const items = await invModel.getAllInventory()   // <-- fetch everything
+    const items = await invModel.getAllInventory()
     res.render("inventory", {
       title: "Inventory — All Vehicles",
       description: "Browse all vehicles on the lot.",
@@ -73,20 +73,40 @@ async function buildById(req, res, next) {
  * =============================== */
 
 /* Management hub view */
-async function management(_req, res, next) {
+async function management(req, res, next) {
   try {
-    const nav = await utilities.getNav()
-    res.render("inv/management", { title: "Inventory Management", nav })
-  } catch (e) { next(e) }
+    const classifications = await invModel.getClassifications();
+    const allVehicles = await invModel.getAllInventory();  // fetch all vehicles
+    const recent = allVehicles.slice(0, 5);
+
+    res.render("inventory/management", {
+      title: "Inventory Management",
+      nav: res.locals.nav,  // ✅ middleware already sets this
+      flash: { success: req.flash("success"), error: req.flash("error") },
+      notice: req.flash("notice"),
+      classifications,
+      recent,
+      totalVehicles: allVehicles.length,  // ✅ add this line
+      utilities,            // for formatPrice etc.
+    });
+  } catch (e) {
+    next(e);
+  }
 }
 
 /* Show Add Classification form */
 async function showAddClassification(req, res, next) {
   try {
     const nav = await utilities.getNav()
-    res.render("inv/add-classification", {
+    const flash = {
+      error: (req.flash && req.flash("error")) || [],
+      success: (req.flash && req.flash("success")) || []
+    }
+    // 🔧 FIXED PATH
+    res.render("inventory/add-classification", {
       title: "Add Classification",
       nav,
+      flash,
       errors: req.validationErrors || {},
       values: { classification_name: (req.body && req.body.classification_name) || "" }
     })
@@ -99,8 +119,8 @@ async function addClassification(req, res, next) {
     if (req.validationErrors) return showAddClassification(req, res, next)
     const id = await invModel.insertClassification(req.cleaned.classification_name)
     req.flash && req.flash("success", `Classification created (ID ${id}).`)
-    const nav = await utilities.getNav()
-    return res.render("inv/management", { title: "Inventory Management", nav })
+    // ✅ Redirect so flash shows up on management page
+    return res.redirect("/inv/management")
   } catch (e) {
     req.flash && req.flash("error", "Failed to create classification.")
     return showAddClassification(req, res, next)
@@ -113,9 +133,15 @@ async function showAddVehicle(req, res, next) {
     const nav = await utilities.getNav()
     const selected = req.body?.classification_id || null
     const classificationSelect = await utilities.buildClassificationList(selected)
-    res.render("inv/add-vehicle", {
+    const flash = {
+      error: (req.flash && req.flash("error")) || [],
+      success: (req.flash && req.flash("success")) || []
+    }
+    // 🔧 FIXED PATH
+    res.render("inventory/add-vehicle", {
       title: "Add Vehicle",
       nav,
+      flash,
       classificationSelect,
       errors: req.validationErrors || {},
       values: req.body || {}
@@ -129,8 +155,8 @@ async function addVehicle(req, res, next) {
     if (req.validationErrors) return showAddVehicle(req, res, next)
     const id = await invModel.insertVehicle(req.cleaned)
     req.flash && req.flash("success", `Vehicle created (ID ${id}).`)
-    const nav = await utilities.getNav()
-    return res.render("inv/management", { title: "Inventory Management", nav })
+    // ✅ Redirect back to management
+    return res.redirect("/inv/management")
   } catch (e) {
     req.flash && req.flash("error", "Failed to create vehicle.")
     return showAddVehicle(req, res, next)
@@ -150,4 +176,3 @@ module.exports = {
   showAddVehicle,
   addVehicle
 }
-
