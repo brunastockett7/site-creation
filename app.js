@@ -1,24 +1,59 @@
 /* eslint-env node */
 /* eslint-disable no-console */
 
-// app.js  (Node server)
 const express = require('express');
 const path = require('path');
 const expressLayouts = require('express-ejs-layouts');
+const session = require('express-session');
+
+const invRouter = require('./routes/inventoryroute'); // <-- your router
+const invModel = require('./models/inventory-model');  // <-- for nav data
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// 1) Serve static files (MUST be before routes)
+/* -------- Core middleware -------- */
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.urlencoded({ extended: true })); // parse form posts
+app.use(express.json());
 
-// 2) View engine + layouts
+/* -------- Sessions + flash -------- */
+app.use(
+  session({
+    secret: 'super-secret', // ok for class projects
+    resave: false,
+    saveUninitialized: false,
+    cookie: { httpOnly: true, sameSite: 'lax' }
+  })
+);
+
+// expose one-time flash to all views
+app.use((req, res, next) => {
+  res.locals.flash = req.session.flash || null;
+  delete req.session.flash;
+  next();
+});
+
+/* -------- View engine + layouts -------- */
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(expressLayouts);
-app.set('layout', 'layout'); // views/layout.ejs
+app.set('layout', 'layout');
 
-// 3) Routes (render content-only views)
+/* -------- Global nav (classifications) -------- */
+app.use(async (_req, res, next) => {
+  try {
+    const rows = await invModel.getClassifications();
+    res.locals.nav = rows; // always an array
+    console.log('Nav classifications count:', rows.length);
+  } catch (e) {
+    console.error('Nav load failed:', e.message);
+    res.locals.nav = [];
+  }
+  next();
+});
+
+/* -------- Public pages -------- */
 app.get('/', (req, res) =>
   res.render('index', {
     title: 'CSE Motors — Home',
@@ -34,41 +69,25 @@ app.get('/inventory', (req, res) =>
 );
 
 app.get('/finance', (req, res) =>
-  res.render('finance', {
-    title: 'Finance - CSE Motors',
-    description: 'Get pre-approved online in minutes. Competitive rates.'
-  })
+  res.render('finance', { title: 'Finance - CSE Motors', description: 'Get pre-approved online.' })
 );
 
 app.get('/service', (req, res) =>
-  res.render('service', {
-    title: 'Service & Maintenance - CSE Motors',
-    description: 'Certified technicians, fair quotes, fast turnaround.'
-  })
+  res.render('service', { title: 'Service & Maintenance - CSE Motors', description: 'Certified techs.' })
 );
 
-app.get('/privacy', (req, res) =>
-  res.render('privacy', { title: 'Privacy - CSE Motors', description: 'Privacy policy.' })
-);
-app.get('/terms', (req, res) =>
-  res.render('terms', { title: 'Terms - CSE Motors', description: 'Terms of service.' })
-);
-app.get('/contact', (req, res) =>
-  res.render('contact', { title: 'Contact - CSE Motors', description: 'Contact us.' })
-);
+app.get('/privacy', (req, res) => res.render('privacy', { title: 'Privacy - CSE Motors' }));
+app.get('/terms', (req, res) => res.render('terms', { title: 'Terms - CSE Motors' }));
+app.get('/contact', (req, res) => res.render('contact', { title: 'Contact - CSE Motors' }));
 
-// 404
-app.use((req, res) => {
-  res.status(404).render('404', { title: 'Not Found', description: 'Page not found.' });
-});
+/* -------- MVC routes (W04) -------- */
+app.use('/inv', invRouter); // /inv/management, /inv/add-classification, /inv/add-vehicle, etc.
 
-// 500 error handler (must have 4 params)
-app.use((err, req, res, next) => {
-  console.error(err.stack); // log to server console
-  res.status(500).render('500', {
-    title: 'Server Error',
-    description: 'Something went wrong on our end. Please try again later.'
-  });
+/* -------- 404 + 500 -------- */
+app.use((req, res) => res.status(404).render('404', { title: 'Not Found' }));
+app.use((err, _req, res, _next) => {
+  console.error(err.stack);
+  res.status(500).render('500', { title: 'Server Error' });
 });
 
 app.listen(PORT, () => console.log(`Server listening on ${PORT}`));

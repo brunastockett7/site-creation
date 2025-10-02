@@ -1,6 +1,18 @@
-<div class="detail-page">
-  <h1 class="page-title"><%= title %></h1>
-  <div class="detail-wrapper">
-    <%- content %>  <!-- HTML from utilities.buildDetailView(...) -->
+<div class="vehicle-detail">
+  <h1><%= title %></h1>
+
+  <div class="detail-grid">
+    <figure>
+      <img src="<%= vehicle.inv_image %>"
+           alt="Photo of <%= vehicle.inv_year %> <%= vehicle.inv_make %> <%= vehicle.inv_model %>">
+    </figure>
+
+    <section>
+      <h2><%= vehicle.inv_year %> <%= vehicle.inv_make %> <%= vehicle.inv_model %></h2>
+      <p><strong>Price:</strong> $<%= Number(vehicle.inv_price).toLocaleString() %></p>
+      <p><strong>Mileage:</strong> <%= Number(vehicle.inv_miles).toLocaleString() %> miles</p>
+      <p><strong>Color:</strong> <%= vehicle.inv_color %></p>
+      <p><strong>Description:</strong> <%= vehicle.inv_description %></p>
+    </section>
   </div>
 </div>

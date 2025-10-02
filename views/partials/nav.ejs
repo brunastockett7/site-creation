@@ -1,17 +1,23 @@
 <nav class="site-nav" aria-label="Primary">
   <ul id="primary-nav" class="nav-list">
-    <!-- Home -->
     <li><a href="/">Home</a></li>
 
-    <!-- Inventory (no dropdown) -->
-    <li>
-      <a href="/inv/type">Inventory</a>
-    </li>
+    <!-- Static Inventory hub -->
+    <li><a href="/inv/type">Inventory</a></li>
 
-    <!-- Static links -->
+    <!-- Dynamic classifications -->
+    <% const items = Array.isArray(nav) ? nav : []; %>
+    <% items.forEach(c => { 
+         const id = c.classification_id ?? c.classificationId ?? c.id;
+         const name = c.classification_name ?? c.classificationName ?? c.name;
+    %>
+      <li>
+        <a href="/inv/type/<%= id %>" title="View <%= name %> vehicles"><%= name %></a>
+      </li>
+    <% }) %>
+
     <li><a href="/finance">Financing</a></li>
     <li><a href="/service">Service</a></li>
     <li><a href="/inv/management">Management</a></li>
   </ul>
 </nav>
-

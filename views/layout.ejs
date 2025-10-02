@@ -18,12 +18,21 @@
   </header>
 
   <main class="container">
+    <!-- Flash / Session messages -->
+    <% if (flash) { %>
+  <p class="notice" role="status">
+    <%= typeof flash === "string" ? flash : "" %>
+  </p>
+<% } %>
+
     <!-- This is where each child view (inventory.ejs, detail.ejs, error.ejs) will render -->
     <%- body %>
   </main>
-<footer class="site-footer">
-  <p>&copy; <%= new Date().getFullYear() %> CSE Motors</p>
-</footer>
+
+  <footer class="site-footer">
+    <p>&copy; <%= new Date().getFullYear() %> CSE Motors</p>
+  </footer>
 </body>
 </html>
+
 

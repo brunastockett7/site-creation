@@ -1,47 +1,47 @@
 <main class="container">
   <h1><%= title %></h1>
 
-  <% if (flash.error && flash.error.length) { %>
-    <div class="flash error" role="alert"><%= flash.error[0] %></div>
-  <% } %>
-  <% if (flash.success && flash.success.length) { %>
-    <div class="flash success" role="status"><%= flash.success[0] %></div>
-  <% } %>
+  <% 
+    // errors is an object map from validators.js
+    function err(field) {
+    return (errors && typeof errors === 'object') ? errors[field] : null;
+    }
+  %>
 
   <form method="post" action="/inv/add-vehicle" novalidate>
     <!-- Make -->
     <label for="inv_make">Make</label>
-    <input id="inv_make" name="inv_make" type="text" minlength="2" required
+    <input id="inv_make" name="inv_make" type="text" minlength="2" maxlength="30" required
            aria-describedby="invMakeError"
            value="<%= values?.inv_make || '' %>">
-    <% if (errors?.inv_make) { %>
-      <span id="invMakeError" class="error"><%= errors.inv_make %></span>
+    <% if (err('inv_make')) { %>
+      <span id="invMakeError" class="error"><%= err('inv_make') %></span>
     <% } %>
 
     <!-- Model -->
     <label for="inv_model">Model</label>
-    <input id="inv_model" name="inv_model" type="text" required
+    <input id="inv_model" name="inv_model" type="text" minlength="1" maxlength="30" required
            aria-describedby="invModelError"
            value="<%= values?.inv_model || '' %>">
-    <% if (errors?.inv_model) { %>
-      <span id="invModelError" class="error"><%= errors.inv_model %></span>
+    <% if (err('inv_model')) { %>
+      <span id="invModelError" class="error"><%= err('inv_model') %></span>
     <% } %>
 
     <!-- Year -->
     <label for="inv_year">Year</label>
-    <input id="inv_year" name="inv_year" type="number" min="1900" max="2100" step="1" required
+    <input id="inv_year" name="inv_year" type="number" min="1900" max="2099" step="1" required
            aria-describedby="invYearError"
            value="<%= values?.inv_year ?? '' %>">
-    <% if (errors?.inv_year) { %>
-      <span id="invYearError" class="error"><%= errors.inv_year %></span>
+    <% if (err('inv_year')) { %>
+      <span id="invYearError" class="error"><%= err('inv_year') %></span>
     <% } %>
 
     <!-- Description -->
     <label for="inv_description">Description</label>
-    <textarea id="inv_description" name="inv_description" minlength="10" required
+    <textarea id="inv_description" name="inv_description" minlength="10" maxlength="1000" required
               aria-describedby="invDescError"><%= values?.inv_description || '' %></textarea>
-    <% if (errors?.inv_description) { %>
-      <span id="invDescError" class="error"><%= errors.inv_description %></span>
+    <% if (err('inv_description')) { %>
+      <span id="invDescError" class="error"><%= err('inv_description') %></span>
     <% } %>
 
     <!-- Image -->
@@ -50,8 +50,8 @@
            pattern="^\/images\/[^ ]+\.(jpg|jpeg|png|webp)$"
            aria-describedby="invImageError"
            value="<%= values?.inv_image || '/images/no-image.png' %>">
-    <% if (errors?.inv_image) { %>
-      <span id="invImageError" class="error"><%= errors.inv_image %></span>
+    <% if (err('inv_image')) { %>
+      <span id="invImageError" class="error"><%= err('inv_image') %></span>
     <% } %>
 
     <!-- Thumbnail -->
@@ -60,8 +60,8 @@
            pattern="^\/images\/[^ ]+\.(jpg|jpeg|png|webp)$"
            aria-describedby="invThumbError"
            value="<%= values?.inv_thumbnail || '/images/no-image-tn.png' %>">
-    <% if (errors?.inv_thumbnail) { %>
-      <span id="invThumbError" class="error"><%= errors.inv_thumbnail %></span>
+    <% if (err('inv_thumbnail')) { %>
+      <span id="invThumbError" class="error"><%= err('inv_thumbnail') %></span>
     <% } %>
 
     <!-- Price -->
@@ -69,33 +69,33 @@
     <input id="inv_price" name="inv_price" type="number" min="0" step="0.01" required
            aria-describedby="invPriceError"
            value="<%= values?.inv_price ?? '' %>">
-    <% if (errors?.inv_price) { %>
-      <span id="invPriceError" class="error"><%= errors.inv_price %></span>
+    <% if (err('inv_price')) { %>
+      <span id="invPriceError" class="error"><%= err('inv_price') %></span>
     <% } %>
 
-    <!-- Miles (NOT stock) -->
+    <!-- Miles -->
     <label for="inv_miles">Miles</label>
     <input id="inv_miles" name="inv_miles" type="number" min="0" step="1" required
            aria-describedby="invMilesError"
            value="<%= values?.inv_miles ?? '' %>">
-    <% if (errors?.inv_miles) { %>
-      <span id="invMilesError" class="error"><%= errors.inv_miles %></span>
+    <% if (err('inv_miles')) { %>
+      <span id="invMilesError" class="error"><%= err('inv_miles') %></span>
     <% } %>
 
     <!-- Color -->
     <label for="inv_color">Color</label>
-    <input id="inv_color" name="inv_color" type="text" pattern="[A-Za-z ]{3,30}" required
+    <input id="inv_color" name="inv_color" type="text" pattern="[A-Za-z -]{3,30}" required
            aria-describedby="invColorError"
            value="<%= values?.inv_color || '' %>">
-    <% if (errors?.inv_color) { %>
-      <span id="invColorError" class="error"><%= errors.inv_color %></span>
+    <% if (err('inv_color')) { %>
+      <span id="invColorError" class="error"><%= err('inv_color') %></span>
     <% } %>
 
-    <!-- Classification dropdown (from utilities.buildClassificationList) -->
+    <!-- Classification (provided HTML select) -->
     <label for="classificationList">Classification</label>
     <%- classificationSelect %>
-    <% if (errors?.classification_id) { %>
-      <span class="error"><%= errors.classification_id %></span>
+    <% if (err('classification_id')) { %>
+      <span class="error"><%= err('classification_id') %></span>
     <% } %>
 
     <button type="submit">Save</button>
@@ -103,8 +103,11 @@
 </main>
 
 <script>
-  // Frontend checklist: simple validity hook
+  // Frontend checklist: trigger native validity UI if invalid
   document.querySelector("form").addEventListener("submit", (e) => {
-    if (!e.target.checkValidity()) { e.preventDefault(); e.target.reportValidity(); }
+    if (!e.target.checkValidity()) {
+      e.preventDefault();
+      e.target.reportValidity();
+    }
   });
 </script>

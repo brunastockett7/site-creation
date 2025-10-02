@@ -1,16 +1,15 @@
 <main class="container">
   <h1><%= title %></h1>
 
-  <% if (flash.error && flash.error.length) { %>
-    <div class="flash error" role="alert"><%= flash.error[0] %></div>
-  <% } %>
-  <% if (flash.success && flash.success.length) { %>
-    <div class="flash success" role="status"><%= flash.success[0] %></div>
-  <% } %>
+  <%
+    // errors is an object map from validators.js
+    function err(field) {
+      return (errors && typeof errors === "object") ? errors[field] : null;
+    }
+  %>
 
   <p>Only letters and numbers. No spaces or special characters.</p>
 
-  <!-- ✅ added id -->
   <form id="add-classification-form" method="post" action="/inv/add-classification" novalidate>
     <label for="classification_name">Classification Name</label>
     <input
@@ -18,19 +17,27 @@
       name="classification_name"
       type="text"
       pattern="[A-Za-z0-9]{3,30}"
+      minlength="3"
+      maxlength="30"
       required
       title="3–30 letters/numbers, no spaces"
       aria-describedby="classificationHelp"
       value="<%= values?.classification_name || '' %>"
     />
-    <% if (errors?.classification_name) { %>
-      <span class="error" id="classificationHelp"><%= errors.classification_name %></span>
+    <% if (err('classification_name')) { %>
+      <span class="error" id="classificationHelp"><%= err('classification_name') %></span>
     <% } %>
 
     <button type="submit">Save</button>
   </form>
 </main>
 
-<!-- ✅ point to shared client-side validation script -->
-<script src="/js/client-validation.js"></script>
-
+<script>
+  // Trigger native browser validation UI if invalid (frontend checklist)
+  document.getElementById('add-classification-form').addEventListener('submit', (e) => {
+    if (!e.target.checkValidity()) {
+      e.preventDefault();
+      e.target.reportValidity();
+    }
+  });
+</script>
