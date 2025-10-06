@@ -116,21 +116,32 @@ app.get("/__debug/whoami", (req, res) => {
 
 // --- Logout route ---
 app.get("/logout", (req, res) => {
+  console.log("Logout route triggered"); // This log helps you confirm if the route is being accessed
+  
   if (req.session) {
     req.session.destroy(err => {
       if (err) {
-        console.error("Logout error:", err);
+        console.error("Logout error:", err); // Log any error during session destruction
         return res.status(500).send("Error logging out");
       }
-      // clear session cookie (default for express-session)
+
+      // Clear the session cookie (default for express-session)
       res.clearCookie("connect.sid");
-      // redirect to home page
-      return res.redirect("/"); // Redirect to home (or /login if preferred)
+
+      // Optionally, clear the JWT cookie if you are using it
+      res.clearCookie("jwt", { httpOnly: true, sameSite: "lax" });
+
+      // Redirect to home or logout success page
+      return res.redirect("/logout-success"); // Redirect to logout success page or home page
     });
   } else {
-    return res.redirect("/"); // Redirect to home (or /login if preferred)
+    // If no session exists, clear the cookies and redirect
+    res.clearCookie("connect.sid");
+    res.clearCookie("jwt", { httpOnly: true, sameSite: "lax" });
+    return res.redirect("/logout-success"); // Redirect to logout success page or home page
   }
 });
+
 
 /* -------- 404 + 500 (no view files) -------- */
 app.use((req, res) => {
