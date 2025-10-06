@@ -3,10 +3,29 @@
     <h1 class="brand"><a href="/">CSE Motors</a></h1>
 
     <nav class="primary-actions" aria-label="Primary">
-      <!-- Static links -->
+      <!-- Static links (always visible) -->
       <a class="pill" href="/finance">Financing</a>
       <a class="pill" href="/service">Service</a>
-      <a class="pill" href="/inv">Inventory</a> <!-- Link to inventory page -->
+      <a class="pill" href="/inv">Inventory</a>
+
+      <!-- ✅ Dynamic account links based on login state -->
+      <% if (user) { %>
+        <a class="pill" href="/account/manage">Account</a>
+        <a class="pill" href="/account/update">Update</a>
+
+        <!-- ✅ Optional role example -->
+        <% if (user.role === 'Admin' || user.role === 'Employee') { %>
+          <a class="pill" href="#" aria-disabled="true">Admin</a>
+        <% } %>
+
+        <!-- ✅ Logout form -->
+        <form action="/logout" method="post" style="display:inline">
+          <button class="pill" type="submit">Logout</button>
+        </form>
+      <% } else { %>
+        <!-- ✅ Show login when not authenticated -->
+        <a class="pill" href="/login">Login</a>
+      <% } %>
     </nav>
   </div>
 </header>

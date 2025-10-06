@@ -1,0 +1,84 @@
+<section class="stack">
+  <h1>Update Account</h1>
+
+  <% if (errors && errors.length) { %>
+    <div class="errors" role="alert" aria-live="polite">
+      <ul>
+        <% errors.forEach(e => { %><li><%= e %></li><% }) %>
+      </ul>
+    </div>
+  <% } %>
+
+  <% if (success) { %>
+    <p class="success" role="status"><%= success %></p>
+  <% } %>
+
+  <!-- Account details -->
+  <form id="account-form" action="/account/update" method="post" novalidate>
+    <fieldset>
+      <legend>Profile</legend>
+
+      <div class="field">
+        <label for="name">Full name</label>
+        <input
+          id="name"
+          name="name"
+          type="text"
+          value="<%= (account && account.name) ? account.name : '' %>"
+          required
+          minlength="2"
+          autocomplete="name"
+        />
+      </div>
+
+      <div class="field">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          value="<%= (account && account.email) ? account.email : '' %>"
+          required
+          autocomplete="email"
+        />
+      </div>
+
+      <button type="submit">Save</button>
+    </fieldset>
+  </form>
+
+  <hr />
+
+  <!-- Password -->
+  <form id="password-form" action="/account/password" method="post" novalidate>
+    <fieldset>
+      <legend>Change Password</legend>
+
+      <div class="field">
+        <label for="password">New password</label>
+        <input
+          id="password"
+          name="password"
+          type="password"
+          required
+          minlength="8"
+          autocomplete="new-password"
+        />
+      </div>
+
+      <div class="field">
+        <label for="confirm">Confirm password</label>
+        <input
+          id="confirm"
+          name="confirm"
+          type="password"
+          required
+          minlength="8"
+          autocomplete="new-password"
+        />
+      </div>
+
+      <button type="submit">Change Password</button>
+    </fieldset>
+  </form>
+</section>

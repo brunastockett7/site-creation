@@ -2,11 +2,13 @@
   <h1><%= title %></h1>
 
   <div class="detail-grid">
+    <!-- Vehicle Image -->
     <figure>
-      <img src="<%= vehicle.inv_image %>"
-           alt="Photo of <%= vehicle.inv_year %> <%= vehicle.inv_make %> <%= vehicle.inv_model %>">
+      <!-- Use dynamic path for the image based on the vehicle's image name stored in the database -->
+      <img src="/images/<%= vehicle.inv_image %>" alt="Photo of <%= vehicle.inv_year %> <%= vehicle.inv_make %> <%= vehicle.inv_model %>">
     </figure>
 
+    <!-- Vehicle Details -->
     <section>
       <h2><%= vehicle.inv_year %> <%= vehicle.inv_make %> <%= vehicle.inv_model %></h2>
       <p><strong>Price:</strong> $<%= Number(vehicle.inv_price).toLocaleString() %></p>

@@ -1,0 +1,27 @@
+<section class="stack">
+  <h1>Create Account</h1>
+
+  <% if (errors && errors.length) { %>
+    <ul class="errors">
+      <% errors.forEach(e => { %><li><%= e %></li><% }) %>
+    </ul>
+  <% } %>
+
+  <form action="/auth/register" method="post" novalidate>
+    <label for="name">Name</label>
+    <input id="name" name="name" value="<%= (data && data.name) || '' %>" required>
+
+    <label for="email">Email</label>
+    <input id="email" name="email" type="email" value="<%= (data && data.email) || '' %>" required>
+
+    <label for="password">Password</label>
+    <input id="password" name="password" type="password" minlength="8" required>
+
+    <label for="confirm">Confirm Password</label>
+    <input id="confirm" name="confirm" type="password" minlength="8" required>
+
+    <button type="submit">Create Account</button>
+  </form>
+
+  <p>Already have an account? <a href="/auth/login">Log in</a></p>
+</section>

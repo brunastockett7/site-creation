@@ -1,4 +1,5 @@
 
+
 /* ---------- Base / Theme (keep yours or this minimal set) ---------- */
 :root{
   --bg:#f8fafc; --text:#111827; --muted:#4b5563;
@@ -183,11 +184,19 @@ html, body {
 .page-wrapper main {
   flex: 1;
 }
-/* ---------- Vehicle Detail (W03 rubric) ---------- */
+
+/* ===== Vehicle Detail — single source of truth ===== */
+.detail-page .detail-wrapper { margin-block: 1rem 2rem; }
+
 .vehicle-detail {
   display: grid;
   gap: 1rem;
+  grid-template-columns: 1fr;   /* stacked on small screens */
   align-items: start;
+}
+
+@media (min-width: 900px) {
+  .vehicle-detail { grid-template-columns: 1fr 1fr; } /* side-by-side */
 }
 
 .vehicle-media img {
@@ -203,15 +212,14 @@ html, body {
   line-height: 1.6;
 }
 
-.vehicle-info h2 {
-  margin: .25rem 0 .5rem;
-}
+.vehicle-info h2 { margin: .25rem 0 .5rem; }
 
 .vehicle-info .price,
 .vehicle-info .miles {
   font-size: 1.125rem;
   font-weight: 600;
 }
+
 
 /* Large screens: image | info side-by-side */
 @media (min-width: 900px) {
@@ -635,3 +643,385 @@ a:focus, button:focus, [tabindex]:focus {
 }
 .timeline li span{ font-weight:700; color:#1e3a8a; margin-right:.35rem; }
 
+
+/* ===== Login page (append-only) ===== */
+
+/* Wrap: keeps the login card nicely centered on the page */
+#login-form {
+  max-width: 420px;
+  margin: 1rem auto 2.25rem;
+  padding: 1.1rem 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.06);
+}
+
+/* “Login” heading spacing (only when it’s the guest view) */
+#login-form 
+.stack h2 + #login-form,
+#login-form { /* ensure a little top air */
+  margin-top: .75rem;
+}
+
+/* Little playful touch: decorative emoji above the card */
+#login-form::before {
+  content: "🚗💨";
+  display: block;
+  text-align: center;
+  font-size: 1.4rem;
+  margin-bottom: .25rem;
+  opacity: .9;
+  animation: vroom 2.4s ease-in-out infinite;
+}
+@keyframes vroom {
+  0%, 100% { transform: translateX(0) }
+  50%      { transform: translateX(6px) }
+}
+
+/* Fields */
+#login-form .field {
+  display: grid;
+  gap: .35rem;
+  margin-bottom: .85rem;
+}
+
+#login-form label {
+  font-weight: 600;
+  color: var(--brand-dark);
+}
+
+#login-form input[type="email"],
+#login-form input[type="password"] {
+  width: 100%;
+  padding: .6rem .7rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--text);
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+#login-form input:focus {
+  outline: none;
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px rgba(37,99,235,.18); /* focus ring */
+}
+
+/* Client-side validation feedback (HTML5) */
+#login-form input:invalid:not(:focus):not(:placeholder-shown) {
+  border-color: #dc2626;
+}
+
+/* Submit button */
+#login-form button[type="submit"],
+#login-form button {
+  display: inline-block;
+  width: 100%;
+  padding: .65rem .9rem;
+  border: 0;
+  border-radius: 10px;
+  background: var(--brand);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: filter .15s ease, transform .02s ease;
+}
+#login-form button:hover { filter: brightness(.96); }
+#login-form button:active { transform: translateY(1px); }
+
+/* Errors list you already render */
+.errors {
+  margin: 0 0 .9rem;
+  padding: .6rem .75rem;
+  border: 1px solid #f7b6b6;
+  background: #fde2e2;
+  color: #8a1f1f;
+  border-radius: 10px;
+}
+.errors ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+/* --- Login helpers (no overlap with your current rules) --- */
+.subtitle{
+  text-align:center;
+  color:var(--muted);
+  margin:-.25rem 0 1rem;
+}
+
+/* Eye toggle for password */
+.password-wrap{ position:relative; }
+.toggle-pass{
+  position:absolute;
+  right:8px;
+  top:50%;
+  transform:translateY(-50%);
+  background:none;
+  border:0;
+  cursor:pointer;
+  font-size:1rem;
+}
+
+/* === Password visibility & contrast fixes (append at end) === */
+
+/* Make sure typed text is visible in the password field */
+.password-wrap input[type="password"],
+.password-wrap input[type="text"] {
+  background: #fff !important;             /* ensure white field, not blue */
+  color: #0b213f !important;               /* dark readable text */
+  -webkit-text-fill-color: #0b213f !important; /* fixes WebKit+autofill */
+  caret-color: #0b213f !important;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding-right: 2.25rem;                  /* room for the eye button */
+}
+
+/* Keep placeholder readable but subdued */
+.password-wrap input::placeholder {
+  color: rgba(11, 33, 63, 0.45);
+}
+
+/* Ensure the eye button sits above the input and is clickable */
+.password-wrap { position: relative; }
+.toggle-pass{
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent !important;
+  border: 0;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  z-index: 2;                               /* above the input */
+  color: inherit;
+}
+
+/* If any global button rules were bleeding onto inputs, block them */
+.password-wrap input[type="password"],
+.password-wrap input[type="text"] {
+  box-shadow: none;
+  filter: none;
+}
+
+/* Optional: focus ring for accessibility */
+.password-wrap input:focus {
+  outline: none;
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px rgba(37,99,235,.18);
+}
+
+
+/* ==============================
+   ✨ CSE Motors Account Page (Modern & Polished)
+   ============================== */
+
+:root {
+  --surface: #ffffff;
+  --border: #e5e7eb;
+  --muted: #6b7280;
+  --primary: #2563eb;
+  --accent: #9333ea;
+  --radius: 16px;
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+/* Profile Hero */
+.account-hero {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem auto;
+  max-width: 840px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.account-hero:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+}
+
+.avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 1.2rem;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: #fff;
+  letter-spacing: 0.5px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+}
+
+.hero-text .eyebrow {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin: 0 0 0.2rem;
+}
+
+.greet {
+  margin: 0.15rem 0;
+  font-size: 1.45rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.role-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  margin-left: 0.5rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 999px;
+  background: #eef2ff;
+  color: #3730a3;
+  border: 1px solid #c7d2fe;
+  text-transform: uppercase;
+}
+
+.muted {
+  color: var(--muted);
+  margin: 0.25rem 0 0;
+  font-size: 0.9rem;
+}
+
+/* Action Grid */
+.action-grid {
+  --min: 260px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(var(--min), 1fr));
+  gap: 1.25rem;
+  max-width: 920px;
+  margin: 1.5rem auto 2.5rem;
+}
+
+/* Action Cards */
+.action-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.25rem;
+  text-decoration: none;
+  color: inherit;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  transition: transform 0.18s ease, box-shadow 0.25s ease, border-color 0.2s ease;
+}
+
+.action-card:hover {
+  transform: translateY(-2px);
+  border-color: #d1d5db;
+  box-shadow: 0 10px 26px rgba(37, 99, 235, 0.15);
+}
+
+.action-card .icon {
+  font-size: 1.6rem;
+}
+
+.action-card h3 {
+  margin: 0.1rem 0 0.2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.action-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+/* Logout button card */
+.action-card.as-button {
+  padding: 0;
+}
+
+.action-card.as-button button {
+  all: unset;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.25rem;
+  width: 100%;
+  cursor: pointer;
+  color: inherit;
+}
+
+.action-card.as-button button:hover {
+  background: #f9fafb;
+  border-radius: 14px;
+}
+
+/* Mobile tweaks */
+@media (max-width: 600px) {
+  .account-hero {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .avatar {
+    width: 60px;
+    height: 60px;
+    font-size: 1rem;
+  }
+
+  .action-card {
+    padding: 1rem;
+  }
+
+  .greet {
+    font-size: 1.25rem;
+  }
+}
+
+
+.logout-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+  }
+
+  .logout-message {
+    text-align: center;
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .logout-message h2 {
+    color: #333;
+    font-size: 2rem;
+  }
+
+  .logout-message p {
+    color: #555;
+    font-size: 1rem;
+    margin: 20px 0;
+  }
+
+  .btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1rem;
+  }
+
+  .btn:hover {
+    background-color: #0056b3;
+  }

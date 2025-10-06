@@ -1,5 +1,5 @@
 // utilities/index.js
-const invModel = require("../models/inventory-model")
+const invModel = require("../src/models/inventory-model");
 const Util = {}
 
 /* ************************

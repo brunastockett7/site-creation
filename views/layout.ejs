@@ -2,30 +2,36 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title><%= title || 'CSE Motors' %></title>
+  <title>
+    <%= typeof title !== 'undefined'
+          ? title
+          : (typeof pageTitle !== 'undefined' ? pageTitle : 'CSE Motors') %>
+  </title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/styles.css">
+  <!-- ✅ JS for client-side validation (rubric Frontend Checklist) -->
+  <script src="/form.js" defer></script>
 </head>
 <body>
   <header class="site-header">
-    <!-- Brand on top -->
+    <!-- Brand -->
     <h1 class="brand"><a href="/">CSE Motors</a></h1>
 
-    <!-- Navigation (static include instead of raw nav dump) -->
+    <!-- ✅ Navigation (dynamic) -->
     <nav class="main-nav">
-      <%- include('partials/nav') %>
+      <%- include('partials/header') %>
     </nav>
   </header>
 
   <main class="container">
-    <!-- Flash / Session messages -->
+    <!-- ✅ Flash / Session messages -->
     <% if (flash) { %>
-  <p class="notice" role="status">
-    <%= typeof flash === "string" ? flash : "" %>
-  </p>
-<% } %>
+      <p class="notice" role="status">
+        <%= typeof flash === "string" ? flash : "" %>
+      </p>
+    <% } %>
 
-    <!-- This is where each child view (inventory.ejs, detail.ejs, error.ejs) will render -->
+    <!-- ✅ Render the main content -->
     <%- body %>
   </main>
 
@@ -34,5 +40,3 @@
   </footer>
 </body>
 </html>
-
-

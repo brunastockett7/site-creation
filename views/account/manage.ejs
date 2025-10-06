@@ -1,0 +1,140 @@
+<section class="stack">
+  <% if (user) { %>
+    <!-- ✅ Fun profile banner -->
+    <div class="account-hero">
+      <div class="avatar" aria-hidden="true">
+        <span>
+          <%= (user.name || user.email || 'U')
+              .trim().split(/\s+/).map(s => s[0]).slice(0,2).join('').toUpperCase() %>
+        </span>
+      </div>
+
+      <div class="hero-text">
+        <p class="eyebrow">SIGNED IN</p>
+        <h1 class="greet">
+          Welcome, <strong><%= user.name %></strong>
+          <span class="role-badge"><%= user.role %></span>
+        </h1>
+        <p class="muted">Great to see you again!</p>
+      </div>
+    </div>
+
+    <!-- ✅ Rubric rule: DO NOT render <h2> for Client -->
+    <% if (user.role !== 'Client') { %>
+      <h2 class="section-title">Account Management</h2>
+    <% } %>
+
+    <!-- ✅ Action cards -->
+    <div class="action-grid">
+      <a class="action-card" href="/account/update">
+        <div class="icon" aria-hidden="true">📝</div>
+        <div>
+          <h3>Update details</h3>
+          <p>Edit your name & email, and change your password.</p>
+        </div>
+      </a>
+
+      <a class="action-card" href="/inventory">
+        <div class="icon" aria-hidden="true">🚗</div>
+        <div>
+          <h3>Browse inventory</h3>
+          <p>See what’s on the lot today.</p>
+        </div>
+      </a>
+
+      <a class="action-card" href="/service">
+        <div class="icon" aria-hidden="true">🛠️</div>
+        <div>
+          <h3>Book service</h3>
+          <p>Schedule maintenance or repairs.</p>
+        </div>
+      </a>
+
+      <form class="action-card as-button" action="/auth/logout" method="post">
+        <button type="submit">
+          <div class="icon" aria-hidden="true">🚪</div>
+          <div>
+            <h3>Logout</h3>
+            <p>Sign out of your account safely.</p>
+          </div>
+        </button>
+      </form>
+    </div>
+
+  <% } else { %>
+    <!-- ✅ Guest / Login View -->
+    <section class="login-section" aria-labelledby="login-title">
+      <div class="login-card">
+        <h2 id="login-title">Welcome back 👋</h2>
+        <p class="subtitle">Sign in to manage your CSE Motors account.</p>
+
+        <% if (errors && errors.length) { %>
+          <div class="errors" role="alert" aria-live="polite">
+            <ul>
+              <% errors.forEach(e => { %><li><%= e %></li><% }) %>
+            </ul>
+          </div>
+        <% } %>
+
+        <form id="login-form" method="post" action="/auth/login" novalidate>
+          <div class="field">
+            <label for="email">Email</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              inputmode="email"
+              required
+              autocomplete="email"
+              placeholder="you@example.com" />
+          </div>
+
+          <div class="field">
+            <label for="password">Password</label>
+            <div class="password-wrap">
+              <input
+                id="password"
+                name="password"
+                type="password"
+                required
+                minlength="8"
+                autocomplete="current-password"
+                aria-describedby="pw-help"
+                placeholder="********" />
+              <button
+                type="button"
+                id="toggle-pass"
+                class="toggle-pass"
+                aria-label="Show password"
+                title="Show password">👁️</button>
+            </div>
+            <small id="pw-help" class="help">At least 8 characters.</small>
+          </div>
+
+          <button class="login-btn" type="submit">🚗 Login</button>
+
+          <p class="note">
+            New here? <a href="/auth/register">Create an account</a>
+          </p>
+        </form>
+
+        <script>
+          (function () {
+            const pw = document.getElementById('password');
+            const btn = document.getElementById('toggle-pass');
+            if (!pw || !btn) return;
+            btn.addEventListener('click', () => {
+              const show = pw.type === 'password';
+              pw.type = show ? 'text' : 'password';
+              btn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+              btn.title = show ? 'Hide password' : 'Show password';
+              pw.focus({ preventScroll: true });
+            });
+          }());
+        </script>
+      </div>
+    </section>
+  <% } %>
+</section>
+
+
