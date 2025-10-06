@@ -12,10 +12,13 @@ const cookieParser = require("cookie-parser");
 // middleware
 const { attachUser } = require("./middleware/auth");
 
-// routes & models
-const invRouter     = require("./routes/inventoryroute");
-const invModel      = require("./models/inventory-model");
-const authRoutes    = require("./routes/authroutes");
+// --- Debugging the current directory ---
+console.log("Current directory: ", __dirname);
+
+// Routes & Models
+const invRouter = require("./routes/inventoryroute");  // This should be the correct relative path
+const invModel = require("./models/inventory-model");
+const authRoutes = require("./routes/authroutes");
 const accountRoutes = require("./routes/accountroutes");
 
 const app = express();
