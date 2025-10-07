@@ -9,7 +9,7 @@
       <a class="pill" href="/inv">Inventory</a>
 
       <!-- ✅ Dynamic account links based on login state -->
-      <% if (user) { %>
+      <% if (typeof user !== 'undefined' && user) { %>
         <a class="pill" href="/account/manage">Account</a>
         <a class="pill" href="/account/update">Update</a>
 
@@ -19,12 +19,12 @@
         <% } %>
 
         <!-- ✅ Logout form -->
-        <form action="/logout" method="post" style="display:inline">
+        <form action="/auth/logout" method="post" style="display:inline">
           <button class="pill" type="submit">Logout</button>
         </form>
       <% } else { %>
         <!-- ✅ Show login when not authenticated -->
-        <a class="pill" href="/login">Login</a>
+        <a class="pill" href="/auth/login">Login</a>
       <% } %>
     </nav>
   </div>

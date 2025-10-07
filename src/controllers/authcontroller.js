@@ -3,14 +3,15 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { createAccount, getAccountByEmail } = require("../models/accountmodel");
 
-// ✅ Render login or account page
+// ✅ Render login page
 function loginView(req, res) {
   if (res.locals.user) {
     return res.redirect("/account/manage");
   }
-  return res.render("account/manage", {
-    pageTitle: "Account Management",
+  return res.render("account/login", {
+    pageTitle: "Login — CSE Motors",
     errors: [],
+    values: {},
   });
 }
 
@@ -22,18 +23,14 @@ async function login(req, res) {
   try {
     const user = await getAccountByEmail(email);
     if (!user) {
-      return res.status(401).render("account/manage", {
-        pageTitle: "Account Management",
-        errors: ["Invalid credentials"],
-      });
+      req.flash("error", "Invalid credentials.");
+      return res.redirect("/auth/login");
     }
 
     const ok = await bcrypt.compare(password, user.password_hash);
     if (!ok) {
-      return res.status(401).render("account/manage", {
-        pageTitle: "Account Management",
-        errors: ["Invalid credentials"],
-      });
+      req.flash("error", "Invalid credentials.");
+      return res.redirect("/auth/login");
     }
 
     // ✅ Build JWT token
@@ -49,14 +46,13 @@ async function login(req, res) {
     return res.redirect("/account/manage");
   } catch (err) {
     console.error("Login error:", err.message);
-    req.session.flash = "Login failed. Please try again.";
-    return res.redirect("/auth/login"); // <-- fixed prefix
+    req.flash("error", "Login failed. Please try again.");
+    return res.redirect("/auth/login");
   }
 }
 
 // ✅ Logout and clear cookie
 function logout(req, res) {
-  // Check if a session exists
   if (req.session) {
     req.session.destroy((err) => {
       if (err) {
@@ -64,14 +60,10 @@ function logout(req, res) {
         return res.status(500).send("Error logging out");
       }
 
-      // Clear the JWT cookie
       res.clearCookie("jwt", { httpOnly: true, sameSite: "lax" });
-
-      // Redirect to the logout success page
       return res.redirect("/logout-success");
     });
   } else {
-    // If no session exists, clear the cookie and redirect
     res.clearCookie("jwt", { httpOnly: true, sameSite: "lax" });
     return res.redirect("/logout-success");
   }
@@ -140,3 +132,4 @@ async function register(req, res) {
 }
 
 module.exports = { loginView, login, logout, registerView, register };
+

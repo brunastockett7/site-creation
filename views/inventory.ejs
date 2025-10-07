@@ -1,14 +1,18 @@
 <main class="container">
   <h1><%= title || 'Inventory' %></h1>
-  <p class="lead">Explore our wide selection of vehicles, from new arrivals to pre-owned gems. Find your perfect match.</p>
+  <p class="lead">
+    Explore our wide selection of vehicles, from new arrivals to pre-owned gems. Find your perfect match.
+  </p>
 
-  <% if (flash?.error && flash.error.length) { %>
-    <div class="flash error" role="alert"><%= flash.error[0] %></div>
+  <!-- ✅ Flash messages -->
+  <% if (error_message) { %>
+    <div class="flash error" role="alert"><%= error_message %></div>
   <% } %>
-  <% if (flash?.success && flash.success.length) { %>
-    <div class="flash success" role="status"><%= flash.success[0] %></div>
+  <% if (success_message) { %>
+    <div class="flash success" role="status"><%= success_message %></div>
   <% } %>
 
+  <!-- ✅ Inventory list or fallback -->
   <% if (!items || !items.length) { %>
     <p class="muted">
       No inventory found for this classification.
@@ -18,7 +22,6 @@
     <section aria-label="Available Vehicles" class="inventory-grid">
       <% 
         const toSlug = s => String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-        
         const normalizeImg = (raw, v) => {
           let r = raw && raw.trim() ? raw.trim() : `${toSlug(v.inv_make)}-${toSlug(v.inv_model)}-${v.inv_year || ''}.webp`;
           if (!r.startsWith("/images/")) r = "/images/" + r;
@@ -28,7 +31,7 @@
 
       <ul class="vehicle-list" role="list">
         <% items.forEach(v => { 
-            const img = normalizeImg(v.inv_image, v);  // Normalize image path
+            const img = normalizeImg(v.inv_image, v);
             const alt = `Photo of ${v.inv_year} ${v.inv_make} ${v.inv_model}`;
         %>
           <li class="vehicle-card">
@@ -54,10 +57,11 @@
     </section>
   <% } %>
 
+  <!-- ✅ Browse all vehicles CTA -->
   <section class="card">
     <h2>Browse More Vehicles</h2>
     <p>If you're looking for more options, explore our full inventory.</p>
     <a class="btn" href="/inv/type">Browse All Vehicles</a>
   </section>
-
 </main>
+

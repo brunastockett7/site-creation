@@ -9,7 +9,7 @@
   </title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/styles.css">
-  <!-- ✅ JS for client-side validation (rubric Frontend Checklist) -->
+  <!-- ✅ JS for client-side validation (Frontend Checklist) -->
   <script src="/form.js" defer></script>
 </head>
 <body>
@@ -25,10 +25,11 @@
 
   <main class="container">
     <!-- ✅ Flash / Session messages -->
-    <% if (flash) { %>
-      <p class="notice" role="status">
-        <%= typeof flash === "string" ? flash : "" %>
-      </p>
+    <% if (success_message) { %>
+      <p class="notice success" role="status"><%= success_message %></p>
+    <% } %>
+    <% if (error_message) { %>
+      <p class="notice error" role="status"><%= error_message %></p>
     <% } %>
 
     <!-- ✅ Render the main content -->

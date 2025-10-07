@@ -1,8 +1,8 @@
 /* eslint-env node */
 /* eslint-disable no-undef */
 
-// load environment variables first
 require("dotenv").config();
+
 try {
   const u = new URL(process.env.DATABASE_URL);
   console.log(`DB target → host:${u.hostname} port:${u.port} db:${u.pathname.slice(1)}`);
@@ -13,33 +13,19 @@ const path = require("path");
 const morgan = require("morgan");
 const helmet = require("helmet");
 const expressLayouts = require("express-ejs-layouts");
-
-// NEW: sessions + flash for messages
 const session = require("express-session");
+const cookieParser = require("cookie-parser");
 const flash = require("connect-flash");
-
-// controllers + routes
-// controllers + routes
-const inventoryroute = require("./routes/inventoryroute");
-const basecontroller = require("./controllers/basecontroller");
-const invcontroller = require("./controllers/invcontroller"); // ← ADD THIS LINE
-
-// NEW: utilities for nav
-const utilities = require("./utilities");
-
-// NEW: database (for debug route)
-const db = require("./database");
 
 const app = express();
 
-/* ------------------- SECURITY / HEADERS ------------------- */
+/* -------- Security Headers -------- */
 app.use(
   helmet({
     contentSecurityPolicy: {
       useDefaults: true,
       directives: {
         "default-src": ["'self'"],
-        // Allow small inline scripts used by the forms' client-side validation.
         "script-src": ["'self'", "'unsafe-inline'"],
         "style-src": ["'self'", "https:", "'unsafe-inline'"],
         "img-src": ["'self'", "data:", "https:"],
@@ -49,68 +35,65 @@ app.use(
   })
 );
 
-/* ------------------- LOGGING / STATIC / VIEWS ------------------- */
+/* -------- Static Files & View Engine -------- */
 app.use(morgan("dev"));
 app.use(express.static(path.join(__dirname, "public"), { maxAge: "1d" }));
-
-app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
 app.use(expressLayouts);
 app.set("layout", "layout");
 
-/* ------------------- BODY PARSING + SESSIONS + FLASH ------------------- */
-// Parse URL-encoded form posts
+/* -------- Core Middleware -------- */
 app.use(express.urlencoded({ extended: true }));
-
-// Sessions (needed for flash + login, etc.)
+app.use(express.json());
+app.use(cookieParser());
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "dev",
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: {
       httpOnly: true,
       sameSite: "lax",
-      // secure: true, // enable when behind HTTPS only (Render prod)
     },
   })
 );
-
-// Flash messages
 app.use(flash());
+
 app.use((req, res, next) => {
-  res.locals.flash = {
-    success: req.flash("success"),
-    error: req.flash("error"),
-  };
+  res.locals.user = req.session.user || null;
+  res.locals.account_type = req.session.user?.role || null;
+  res.locals.success_message = req.flash("success")[0] || null;
+  res.locals.error_message = req.flash("error")[0] || null;
   next();
 });
 
-/* ------------------- GLOBAL NAV MIDDLEWARE -------------------*/
-
+/* -------- Global Nav -------- */
+const utilities = require("./utilities");
 app.use(async (_req, res, next) => {
   try {
-    res.locals.nav = await utilities.getNav(); // build from DB
+    res.locals.nav = await utilities.getNav();
   } catch (e) {
     console.error("Nav build failed:", e.message);
-    res.locals.nav = ""; // ✅ fallback so views don't crash
+    res.locals.nav = "";
   }
   next();
 });
 
-/* ------------------- ROUTES ------------------- */
+/* -------- Routes -------- */
+const basecontroller = require("./src/controllers/basecontroller");
+const invcontroller = require("./src/controllers/invcontroller");
+const inventoryroute = require("./src/routes/inventoryroute");
+const authRoutes = require("./src/routes/authroutes");
+const accountRoutes = require("./src/routes/accountroutes");
 
-// Home (MVC via controller)
 app.get("/", basecontroller.buildHome);
-
-// Handle /inv/type (no id) → show all vehicles using your classificationHub
 app.get("/inv/type", invcontroller.classificationHub);
-
-
-// Inventory (MVC)
 app.use("/inv", inventoryroute);
+app.use("/auth", authRoutes);
+app.use(accountRoutes);
 
-// Static views you already had
+/* -------- Public Pages -------- */
 app.get("/finance", (_req, res) => {
   res.render("finance", {
     title: "Finance — CSE Motors",
@@ -125,10 +108,13 @@ app.get("/service", (_req, res) => {
   });
 });
 
-// Health check
-app.get("/health", (_req, res) => res.status(200).send("OK"));
+/* -------- Redirect Helpers -------- */
+app.get("/login", (_req, res) => res.redirect("/auth/login"));
+app.get("/register", (_req, res) => res.redirect("/auth/register"));
 
-// 🔎 Debug DB route (temporary)
+/* -------- Debug Tools -------- */
+const db = require("./database");
+app.get("/health", (_req, res) => res.status(200).send("OK"));
 app.get("/debug/db", async (_req, res) => {
   try {
     const result = await db.query(
@@ -141,30 +127,24 @@ app.get("/debug/db", async (_req, res) => {
   }
 });
 
-/* ------------------- ERROR HANDLERS ------------------- */
-
-// 404 - Not Found
+/* -------- Error Handlers -------- */
 app.use((req, res) => {
-  res.status(404).render("error", {
-    title: "Not Found",
-    status: 404,
-    message: "Page not found",
+  res.status(404).render("error/404", {
+    title: "Page Not Found",
+    description: "Sorry, we couldn’t find the page you were looking for.",
   });
 });
 
-// 500 - Server Error
 app.use((err, _req, res, _next) => {
-  console.error(err);
-  res.status(500).render("error", {
+  console.error(err.stack);
+  res.status(500).render("error/500", {
     title: "Server Error",
-    status: 500,
-    message: "Something went wrong on the server.",
+    description: "Something went wrong on our end.",
   });
 });
 
-/* ------------------- START SERVER ------------------- */
-
+/* -------- Start Server -------- */
 const PORT = Number(process.env.PORT) || 3000;
 app.listen(PORT, () => {
-  console.log(`\n🚗  Server running at http://localhost:${PORT}\n`);
+  console.log(`\n🚗 Server running at http://localhost:${PORT}\n`);
 });

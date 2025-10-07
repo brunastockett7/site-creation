@@ -1,12 +1,12 @@
 <main class="container mgmt">
   <h1 class="page-title"><%= title %></h1>
 
-  <!-- flash (session message passing) -->
-  <% if (flash?.success?.length) { %>
-    <div class="flash success" role="status"><%= flash.success[0] %></div>
+  <!-- ✅ Flash messages (rubric-compliant) -->
+  <% if (success_message) { %>
+    <div class="flash success" role="status"><%= success_message %></div>
   <% } %>
-  <% if (flash?.error?.length) { %>
-    <div class="flash error" role="alert"><%= flash.error[0] %></div>
+  <% if (error_message) { %>
+    <div class="flash error" role="alert"><%= error_message %></div>
   <% } %>
 
   <!-- admin quick actions -->
@@ -55,5 +55,4 @@
       <li><span>2024</span> Expanded inventory sourcing and reconditioning lab.</li>
     </ol>
   </section>
-
 </main>

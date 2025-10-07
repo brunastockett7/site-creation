@@ -2,10 +2,10 @@
   "name": "site-creation",
   "version": "1.0.0",
   "description": "W05 Account Management (Express + EJS + JWT)",
-  "main": "src/app.js",
+  "main": "server.js",  
   "scripts": {
-    "dev": "nodemon src/app.js",
-    "start": "node src/app.js"
+    "dev": "nodemon server.js",
+    "start": "node server.js" 
   },
   "engines": {
     "node": ">=18"
@@ -29,3 +29,4 @@
     "nodemon": "^3.1.0"
   }
 }
+
