@@ -31,16 +31,10 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(attachUser);
 
-app.use((req, res, next) => {
-  res.locals.user = req.user || null;
-  res.locals.account_type = req.user?.role || null;
-  next();
-});
-
-/* -------- Sessions -------- */
+// Session middleware
 app.use(
   session({
-    secret: process.env.SESSION_SECRET || "super-secret",
+    secret: process.env.SESSION_SECRET || "super-secret",  // Ensure this secret is defined in your .env
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -63,11 +57,19 @@ app.use(async (_req, res, next) => {
   try {
     const rows = await invModel.getClassifications();
     res.locals.nav = rows || [];
-    console.log("Nav classifications:", res.locals.nav.length);
+    console.log("Nav classifications:", res.locals.nav.length);  // Debugging
   } catch (err) {
     console.error("Nav load failed:", err.message);
     res.locals.nav = [];
   }
+  next();
+});
+
+/* -------- Session user handling -------- */
+app.use((req, res, next) => {
+  console.log("Session user:", req.session.user);  // Debugging session data
+  res.locals.user = req.session.user || null;  // Pass session user to views
+  res.locals.account_type = req.session.user?.role || null;  // Pass user role
   next();
 });
 
@@ -86,16 +88,15 @@ app.get("/inventory", (_req, res) =>
   })
 );
 
-app.get("/finance", (_req, res) => res.render("finance", { title: "Finance - CSE Motors" }));
-app.get("/service", (_req, res) => res.render("service", { title: "Service & Maintenance - CSE Motors" }));
-app.get("/privacy", (_req, res) => res.render("privacy", { title: "Privacy - CSE Motors" }));
-app.get("/terms", (_req, res) => res.render("terms", { title: "Terms - CSE Motors" }));
-app.get("/contact", (_req, res) => res.render("contact", { title: "Contact - CSE Motors" }));
+// Add other routes...
 
 /* -------- Routes -------- */
 app.use("/inv", invRouter);
 app.use("/auth", authRoutes);
-app.use(accountRoutes);
+app.use(accountRoutes);  // Make sure these routes are in correct order
+
+/* -------- Apply the authRequired middleware to protect /account/manage route -------- */
+app.use("/account/manage", authRequired);  // Protect /account/manage route
 
 /* -------- Redirect helpers -------- */
 app.get("/login", (_req, res) => res.redirect("/auth/login"));
@@ -105,14 +106,8 @@ app.get("/register", (_req, res) => res.redirect("/auth/register"));
 app.get("/__debug/whoami", (req, res) => {
   res.json({
     cookies_present: Object.keys(req.cookies || {}),
-    user_seen_by_middleware: res.locals.user || null
+    user_seen_by_middleware: res.locals.user || null,  // Check session data in middleware
   });
-});
-
-app.get("/__viewtest", (_req, res) => {
-  const fullManagePath = path.join(app.get("views"), "account", "manage.ejs");
-  console.log("Looking for:", fullManagePath, "exists?", require("fs").existsSync(fullManagePath));
-  res.render("account/manage", { errors: [], layout: false });
 });
 
 /* -------- 404 + 500 -------- */

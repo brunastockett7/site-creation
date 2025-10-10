@@ -16,7 +16,7 @@
   <% if (!items || !items.length) { %>
     <p class="muted">
       No inventory found for this classification.
-      <a href="/inv/type">Browse all vehicles</a>.
+      <a href="/inventory/type">Browse all vehicles</a>.
     </p>
   <% } else { %>
     <section aria-label="Available Vehicles" class="inventory-grid">
@@ -35,13 +35,13 @@
             const alt = `Photo of ${v.inv_year} ${v.inv_make} ${v.inv_model}`;
         %>
           <li class="vehicle-card">
-            <a class="vehicle-media" href="/inv/detail/<%= v.inv_id %>">
+            <a class="vehicle-media" href="/inventory/detail/<%= v.inv_id %>">
               <img src="<%= img %>" alt="<%= alt %>" loading="lazy" decoding="async" width="400" height="300">
             </a>
 
             <div class="vehicle-info">
               <h3 class="vehicle-title">
-                <a href="/inv/detail/<%= v.inv_id %>">
+                <a href="/inventory/detail/<%= v.inv_id %>">
                   <%= v.inv_year %> <%= v.inv_make %> <%= v.inv_model %>
                 </a>
               </h3>
@@ -49,7 +49,7 @@
               <p class="price"><%= utilities.formatPrice(v.inv_price) %></p>
               <p class="miles"><%= utilities.formatMiles(v.inv_miles) %></p>
 
-              <a class="btn secondary" href="/inv/detail/<%= v.inv_id %>">View Details</a>
+              <a class="btn secondary" href="/inventory/detail/<%= v.inv_id %>">View Details</a>
             </div>
           </li>
         <% }) %>
@@ -61,7 +61,7 @@
   <section class="card">
     <h2>Browse More Vehicles</h2>
     <p>If you're looking for more options, explore our full inventory.</p>
-    <a class="btn" href="/inv/type">Browse All Vehicles</a>
+    <a class="btn" href="/inventory/type">Browse All Vehicles</a>
   </section>
 </main>
 

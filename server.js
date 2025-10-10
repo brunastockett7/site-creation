@@ -1,5 +1,5 @@
 /* eslint-env node */
-/* eslint-disable no-undef */
+/* eslint-disable no-console */
 
 require("dotenv").config();
 
@@ -13,9 +13,8 @@ const path = require("path");
 const morgan = require("morgan");
 const helmet = require("helmet");
 const expressLayouts = require("express-ejs-layouts");
-const session = require("express-session");
 const cookieParser = require("cookie-parser");
-const flash = require("connect-flash");
+const jwt = require("jsonwebtoken");
 
 const app = express();
 
@@ -47,24 +46,36 @@ app.set("layout", "layout");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET || "dev",
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      httpOnly: true,
-      sameSite: "lax",
-    },
-  })
-);
-app.use(flash());
 
+// Cookie-based flash messages (no sessions)
 app.use((req, res, next) => {
-  res.locals.user = req.session.user || null;
-  res.locals.account_type = req.session.user?.role || null;
-  res.locals.success_message = req.flash("success")[0] || null;
-  res.locals.error_message = req.flash("error")[0] || null;
+  // expose messages to EJS
+  res.locals.success_message = req.cookies.notice || null;
+  res.locals.error_message   = req.cookies.err || null;
+
+  // clear them so they only show once
+  if (req.cookies.notice) res.clearCookie('notice');
+  if (req.cookies.err)    res.clearCookie('err');
+
+  next();
+});
+
+/* -------- JWT locals injector (for views) -------- */
+app.use((req, res, next) => {
+  const token = req.cookies?.jwt;
+  if (token) {
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      res.locals.user = decoded;
+      res.locals.account_type = decoded.role || null;
+    } catch {
+      res.locals.user = null;
+      res.locals.account_type = null;
+    }
+  } else {
+    res.locals.user = null;
+    res.locals.account_type = null;
+  }
   next();
 });
 
@@ -80,6 +91,20 @@ app.use(async (_req, res, next) => {
   next();
 });
 
+/* -------- JWT guard for /account/* -------- */
+function requireAuth(req, res, next) {
+  const token = req.cookies?.jwt;
+  if (!token) return res.redirect("/auth/login");
+  try {
+    req.user = jwt.verify(token, process.env.JWT_SECRET);
+    return next();
+  } catch (err) {
+    console.error("JWT verification failed:", err.message);
+    res.clearCookie("jwt", { httpOnly: true, sameSite: "lax", secure: false });
+    return res.redirect("/auth/login");
+  }
+}
+
 /* -------- Routes -------- */
 const basecontroller = require("./src/controllers/basecontroller");
 const invcontroller = require("./src/controllers/invcontroller");
@@ -88,9 +113,13 @@ const authRoutes = require("./src/routes/authroutes");
 const accountRoutes = require("./src/routes/accountroutes");
 
 app.get("/", basecontroller.buildHome);
-app.get("/inv/type", invcontroller.classificationHub);
-app.use("/inv", inventoryroute);
+app.get("/inventory", invcontroller.classificationHub);
+app.use("/inventory", inventoryroute);
+
 app.use("/auth", authRoutes);
+
+// Protect everything under /account/* without editing your router
+app.use("/account", requireAuth);
 app.use(accountRoutes);
 
 /* -------- Public Pages -------- */
@@ -125,6 +154,14 @@ app.get("/debug/db", async (_req, res) => {
     console.error("DB connection failed:", err);
     res.status(500).send("DB connection failed: " + err.message);
   }
+});
+
+// optional: quick probe
+app.get("/whoami", (req, res) => {
+  res.json({
+    hasJwt: Boolean(req.cookies?.jwt),
+    user: res.locals.user || null,
+  });
 });
 
 /* -------- Error Handlers -------- */

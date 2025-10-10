@@ -3,11 +3,18 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { createAccount, getAccountByEmail } = require("../models/accountmodel");
 
-// ✅ Render login page
+// Helpers
+const isProd = process.env.NODE_ENV === "production";
+const cookieOpts = {
+  httpOnly: true,
+  sameSite: isProd ? "none" : "lax",
+  secure: isProd,                 // must be true only behind HTTPS
+  maxAge: 1000 * 60 * 60,         // 1h
+};
+
+// Render login page
 function loginView(req, res) {
-  if (res.locals.user) {
-    return res.redirect("/account/manage");
-  }
+  if (res.locals.user) return res.redirect("/account/manage");
   return res.render("account/login", {
     pageTitle: "Login — CSE Motors",
     errors: [],
@@ -15,7 +22,7 @@ function loginView(req, res) {
   });
 }
 
-// ✅ Handle login form
+// Handle login form (JWT only)
 async function login(req, res) {
   const email = (req.body.email || "").trim().toLowerCase();
   const password = req.body.password || "";
@@ -23,53 +30,47 @@ async function login(req, res) {
   try {
     const user = await getAccountByEmail(email);
     if (!user) {
-      req.flash("error", "Invalid credentials.");
-      return res.redirect("/auth/login");
+      return res.status(401).render("account/login", {
+        pageTitle: "Login — CSE Motors",
+        errors: ["Invalid credentials."],
+        values: { email },
+      });
     }
 
     const ok = await bcrypt.compare(password, user.password_hash);
     if (!ok) {
-      req.flash("error", "Invalid credentials.");
-      return res.redirect("/auth/login");
+      return res.status(401).render("account/login", {
+        pageTitle: "Login — CSE Motors",
+        errors: ["Invalid credentials."],
+        values: { email },
+      });
     }
 
-    // ✅ Build JWT token
+    // Build JWT and set cookie
     const payload = { id: user.id, email: user.email, role: user.role, name: user.name };
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRES || "1h",
     });
 
-    // ✅ Set cookie
-    res.cookie("jwt", token, { httpOnly: true, sameSite: "lax" });
-
-    // ✅ Redirect to manage page
+    res.cookie("jwt", token, cookieOpts);
     return res.redirect("/account/manage");
   } catch (err) {
     console.error("Login error:", err.message);
-    req.flash("error", "Login failed. Please try again.");
-    return res.redirect("/auth/login");
-  }
-}
-
-// ✅ Logout and clear cookie
-function logout(req, res) {
-  if (req.session) {
-    req.session.destroy((err) => {
-      if (err) {
-        console.error("Error logging out:", err);
-        return res.status(500).send("Error logging out");
-      }
-
-      res.clearCookie("jwt", { httpOnly: true, sameSite: "lax" });
-      return res.redirect("/logout-success");
+    return res.status(500).render("account/login", {
+      pageTitle: "Login — CSE Motors",
+      errors: ["Login failed. Please try again."],
+      values: { email },
     });
-  } else {
-    res.clearCookie("jwt", { httpOnly: true, sameSite: "lax" });
-    return res.redirect("/logout-success");
   }
 }
 
-// ✅ Render Register page
+// Logout (clear JWT cookie)
+function logout(_req, res) {
+  res.clearCookie("jwt", { httpOnly: true, sameSite: cookieOpts.sameSite, secure: cookieOpts.secure });
+  return res.redirect("/");
+}
+
+// Render Register page
 function registerView(req, res) {
   if (res.locals.user) return res.redirect("/account/manage");
   return res.render("account/register", {
@@ -79,7 +80,7 @@ function registerView(req, res) {
   });
 }
 
-// ✅ Handle Register form (auto-login on success)
+// Handle Register form (auto-login via JWT)
 async function register(req, res) {
   const name = (req.body.name || "").trim();
   const email = (req.body.email || "").trim().toLowerCase();
@@ -112,14 +113,14 @@ async function register(req, res) {
 
     const password_hash = await bcrypt.hash(password, 10);
     const created = await createAccount({ name, email, password_hash, role: "Client" });
+    console.log("New User Created:", created);
 
-    // ✅ Auto-login: issue JWT & set cookie
     const payload = { id: created.id, email: created.email, role: created.role, name: created.name };
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_EXPIRES || "1h",
     });
-    res.cookie("jwt", token, { httpOnly: true, sameSite: "lax" });
 
+    res.cookie("jwt", token, cookieOpts);
     return res.redirect("/account/manage");
   } catch (err) {
     console.error("Register error:", err.message);
@@ -132,4 +133,3 @@ async function register(req, res) {
 }
 
 module.exports = { loginView, login, logout, registerView, register };
-

@@ -85,9 +85,7 @@ async function showAddClassification(req, res, next) {
   } catch (e) { next(e) }
 }
 
-/* ===============================
- *  W04: Add Classification (POST)
- * =============================== */
+// W04: Add Classification (POST)
 async function addClassification(req, res, next) {
   try {
     if (req.validationErrors) {
@@ -96,20 +94,30 @@ async function addClassification(req, res, next) {
         title: "Add Classification",
         errors: req.validationErrors,
         values: req.body || {}
-      })
+      });
     }
 
-    const id = await invModel.insertClassification(req.cleaned.classification_name.trim())
+    const id = await invModel.insertClassification(req.cleaned.classification_name.trim());
     if (id) {
-      req.session.flash = "Classification added successfully."
-      return res.redirect("/inv/management")
+      // ✅ success flash + redirect
+      res.cookie("notice", "Classification added successfully.", {
+        maxAge: 5000, httpOnly: true, sameSite: "lax"
+      });
+      return res.redirect("/inventory/management");
     }
-    req.session.flash = "Sorry, adding classification failed."
-    return res.redirect("/inv/add-classification")
+
+    // ❌ failure flash + redirect
+    res.cookie("err", "Sorry, adding classification failed.", {
+      maxAge: 5000, httpOnly: true, sameSite: "lax"
+    });
+    return res.redirect("/inventory/add-classification");
+
   } catch (e) {
-    console.error("addClassification error:", e)
-    req.session.flash = "Unexpected error. Please try again."
-    return res.redirect("/inv/add-classification")
+    console.error("addClassification error:", e);
+    res.cookie("err", "Unexpected error. Please try again.", {
+      maxAge: 5000, httpOnly: true, sameSite: "lax"
+    });
+    return res.redirect("/inventory/add-classification");
   }
 }
 
@@ -165,14 +173,14 @@ async function addVehicle(req, res, next) {
     const id = await invModel.insertVehicle(payload)
     if (id) {
       req.session.flash = "Vehicle added successfully."
-      return res.redirect("/inv/management")
+      return res.redirect("/inventory/management")
     }
     req.session.flash = "Vehicle insert failed."
-    return res.redirect("/inv/add-vehicle")
+    return res.redirect("/inventory/add-vehicle")
   } catch (e) {
     console.error("addVehicle error:", e)
     req.session.flash = "Unexpected error. Please try again."
-    return res.redirect("/inv/add-vehicle")
+    return res.redirect("/inventory/add-vehicle")
   }
 }
 
