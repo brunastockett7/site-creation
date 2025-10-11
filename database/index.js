@@ -1,23 +1,18 @@
+// database/index.js
 const { Pool } = require("pg");
 require("dotenv").config();
 
-if (!process.env.PGHOST) {
-  console.error("❌ PGHOST is not set. Check your .env file at the project root.");
-  process.exit(1);
-}
+// Detect production vs. local
+const isProd = process.env.NODE_ENV === "production";
 
+// Connect using the DATABASE_URL provided by Render
 const pool = new Pool({
-  host: process.env.PGHOST,
-  port: process.env.PGPORT,
-  database: process.env.PGDATABASE,
-  user: process.env.PGUSER,
-  password: process.env.PGPASSWORD,
-  ssl: { rejectUnauthorized: false },
+  connectionString: process.env.DATABASE_URL,
+  ssl: isProd ? { rejectUnauthorized: false } : false, // Required for Render Postgres
 });
 
-console.log(
-  `🔌 DB target → host:${process.env.PGHOST} port:${process.env.PGPORT} db:${process.env.PGDATABASE}`
-);
+// Log connection info
+console.log(`🔌 Connected to DB → ${process.env.DATABASE_URL || 'local database'}`);
 
 async function query(text, params) {
   try {
@@ -30,3 +25,4 @@ async function query(text, params) {
 }
 
 module.exports = { pool, query };
+
