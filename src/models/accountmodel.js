@@ -1,5 +1,5 @@
 /* eslint-env node */
-const bcrypt = require("bcrypt");
+const bcrypt = require('bcryptjs');   // <- make sure it’s bcryptjs
 const { query } = require("../db");
 
 /** Create a new account (prepared statement) */

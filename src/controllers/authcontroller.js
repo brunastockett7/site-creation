@@ -1,5 +1,5 @@
 /* eslint-env node */
-const bcrypt = require("bcrypt");
+const bcrypt = require('bcryptjs');   // or: import bcrypt from 'bcryptjs';
 const jwt = require("jsonwebtoken");
 const { createAccount, getAccountByEmail } = require("../models/accountmodel");
 
