@@ -15,6 +15,7 @@ const helmet = require("helmet");
 const expressLayouts = require("express-ejs-layouts");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
+const db = require("./db"); // ✅ add this line here
 
 const app = express();
 
