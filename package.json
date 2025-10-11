@@ -2,16 +2,16 @@
   "name": "site-creation",
   "version": "1.0.0",
   "description": "W05 Account Management (Express + EJS + JWT)",
-  "main": "server.js",  
+  "main": "server.js",
   "scripts": {
     "dev": "nodemon server.js",
-    "start": "node server.js" 
+    "start": "node server.js"
   },
   "engines": {
     "node": ">=18"
   },
   "dependencies": {
-    "bcrypt": "^5.1.1",
+    "bcryptjs": "^3.0.2",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.7",
     "dotenv": "^17.2.2",
@@ -29,4 +29,3 @@
     "nodemon": "^3.1.0"
   }
 }
-
