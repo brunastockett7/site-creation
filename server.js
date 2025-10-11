@@ -183,8 +183,8 @@ app.use((err, _req, res, _next) => {
 /* -------- Start Server -------- */
 const PORT = Number(process.env.PORT) || 3000;
 const HOST =
-  process.env.NODE_ENV === 'production' ? '0.0.0.0' : '127.0.0.1';
+  process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost';
 
 app.listen(PORT, HOST, () => {
-  console.log(`🚗 Server running at http://${HOST === '0.0.0.0' ? 'localhost' : HOST}:${PORT}`);
+  console.log(`🚗 Server running at http://${HOST}:${PORT}`);
 });
