@@ -18,7 +18,7 @@ const jwt = require("jsonwebtoken");
 
 // ✅ correct imports/paths
 const { query } = require("./src/db");
-const utilities = require("./src/utilities");
+const utilities = require("./utilities");
 
 const app = express();
 if (process.env.NODE_ENV === "production") app.set("trust proxy", 1);
