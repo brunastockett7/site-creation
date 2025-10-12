@@ -1,6 +1,6 @@
+
 /* eslint-env node */
 /* eslint-disable no-console */
-
 require("dotenv").config();
 
 try {
@@ -15,9 +15,13 @@ const helmet = require("helmet");
 const expressLayouts = require("express-ejs-layouts");
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
-const db = require("./db"); // ✅ add this line here
+
+// ✅ correct imports/paths
+const { query } = require("./src/db");
+const utilities = require("./src/utilities");
 
 const app = express();
+if (process.env.NODE_ENV === "production") app.set("trust proxy", 1);
 
 /* -------- Security Headers -------- */
 app.use(
@@ -48,16 +52,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 
-// Cookie-based flash messages (no sessions)
+// ✅ Cookie-based flash (no sessions)
 app.use((req, res, next) => {
-  // expose messages to EJS
-  res.locals.success_message = req.cookies.notice || null;
-  res.locals.error_message   = req.cookies.err || null;
-
-  // clear them so they only show once
-  if (req.cookies.notice) res.clearCookie('notice');
-  if (req.cookies.err)    res.clearCookie('err');
-
+  res.locals.success_message = req.cookies?.notice || null;
+  res.locals.error_message   = req.cookies?.err || null;
+  if (req.cookies?.notice) res.clearCookie("notice");
+  if (req.cookies?.err)    res.clearCookie("err");
   next();
 });
 
@@ -81,7 +81,6 @@ app.use((req, res, next) => {
 });
 
 /* -------- Global Nav -------- */
-const utilities = require("./utilities");
 app.use(async (_req, res, next) => {
   try {
     res.locals.nav = await utilities.getNav();
@@ -114,14 +113,16 @@ const authRoutes = require("./src/routes/authroutes");
 const accountRoutes = require("./src/routes/accountroutes");
 
 app.get("/", basecontroller.buildHome);
+
+// Public inventory hub + router
 app.get("/inventory", invcontroller.classificationHub);
 app.use("/inventory", inventoryroute);
 
+// Auth
 app.use("/auth", authRoutes);
 
-// Protect everything under /account/* without editing your router
-app.use("/account", requireAuth);
-app.use(accountRoutes);
+// ✅ Protect everything under /account/*
+app.use("/account", requireAuth, accountRoutes);
 
 /* -------- Public Pages -------- */
 app.get("/finance", (_req, res) => {
@@ -141,13 +142,14 @@ app.get("/service", (_req, res) => {
 /* -------- Redirect Helpers -------- */
 app.get("/login", (_req, res) => res.redirect("/auth/login"));
 app.get("/register", (_req, res) => res.redirect("/auth/register"));
+// optional compatibility for old links
+app.get("/inv", (_req, res) => res.redirect("/inventory"));
 
 /* -------- Debug Tools -------- */
-const db = require("./database");
 app.get("/health", (_req, res) => res.status(200).send("OK"));
 app.get("/debug/db", async (_req, res) => {
   try {
-    const result = await db.query(
+    const result = await query(
       "SELECT classification_id, classification_name FROM classification ORDER BY classification_id"
     );
     res.json(result.rows);
@@ -157,12 +159,8 @@ app.get("/debug/db", async (_req, res) => {
   }
 });
 
-// optional: quick probe
 app.get("/whoami", (req, res) => {
-  res.json({
-    hasJwt: Boolean(req.cookies?.jwt),
-    user: res.locals.user || null,
-  });
+  res.json({ hasJwt: Boolean(req.cookies?.jwt), user: res.locals.user || null });
 });
 
 /* -------- Error Handlers -------- */
@@ -183,9 +181,7 @@ app.use((err, _req, res, _next) => {
 
 /* -------- Start Server -------- */
 const PORT = Number(process.env.PORT) || 3000;
-const HOST =
-  process.env.NODE_ENV === 'production' ? '0.0.0.0' : 'localhost';
-
+const HOST = process.env.NODE_ENV === "production" ? "0.0.0.0" : "localhost";
 app.listen(PORT, HOST, () => {
   console.log(`🚗 Server running at http://${HOST}:${PORT}`);
 });
