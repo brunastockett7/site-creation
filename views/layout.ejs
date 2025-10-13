@@ -2,42 +2,43 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>
-    <%= typeof title !== 'undefined'
-          ? title
-          : (typeof pageTitle !== 'undefined' ? pageTitle : 'CSE Motors') %>
-  </title>
+  <title><%= title ?? pageTitle ?? 'CSE Motors' %></title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="<%= description ?? 'CSE Motors dealership site' %>">
   <link rel="stylesheet" href="/styles.css">
-  <!-- ✅ JS for client-side validation (Frontend Checklist) -->
+  <!-- Client-side validation (optional) -->
   <script src="/form.js" defer></script>
 </head>
 <body>
-  <header class="site-header">
-    <!-- Brand -->
+  <!-- Skip link for keyboard users -->
+  <a href="#main" class="skip-link">Skip to main content</a>
+
+  <header class="site-header" role="banner">
     <h1 class="brand"><a href="/">CSE Motors</a></h1>
 
-    <!-- ✅ Navigation (dynamic) -->
-    <nav class="main-nav">
+    <!-- Navigation (dynamic) -->
+    <nav class="main-nav" aria-label="Primary">
       <%- include('partials/header') %>
     </nav>
   </header>
 
-  <main class="container">
-    <!-- ✅ Flash / Session messages -->
-    <% if (typeof success_message !== 'undefined' && success_message) { %>
-    <p class="notice success" role="status"><%= success_message %></p>
+  <!-- Main content + live region for flash messages -->
+  <main id="main" class="container" role="main" aria-live="polite">
+    <!-- Flash / Session messages -->
+    <% if (success_message) { %>
+      <p class="notice success" role="status"><%= success_message %></p>
     <% } %>
 
-    <% if (typeof error_message !== 'undefined' && error_message) { %>
-    <p class="notice error" role="status"><%= error_message %></p>
+    <% if (error_message) { %>
+      <!-- alerts should use role="alert" -->
+      <p class="notice error" role="alert"><%= error_message %></p>
     <% } %>
 
-    <!-- ✅ Render the main content -->
+    <!-- View content -->
     <%- body %>
   </main>
 
-  <footer class="site-footer">
+  <footer class="site-footer" role="contentinfo">
     <p>&copy; <%= new Date().getFullYear() %> CSE Motors</p>
   </footer>
 </body>
