@@ -13,15 +13,15 @@ const {
 const router = Router();
 
 // Account dashboard / greeting
-router.get("/account/manage", authRequired, manageView);
+router.get("/manage", authRequired, manageView);
 
 // Update forms page
-router.get("/account/update", authRequired, updateView);
+router.get("/update", authRequired, updateView);
 
 // Update name/email
-router.post("/account/update", authRequired, updateValidators, updateAccountAction);
+router.post("/update", authRequired, updateValidators, updateAccountAction);
 
 // Update password
-router.post("/account/password", authRequired, passwordValidators, updatePasswordAction);
+router.post("/password", authRequired, passwordValidators, updatePasswordAction);
 
 module.exports = router;
