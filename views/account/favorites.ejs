@@ -1,0 +1,56 @@
+<main class="container">
+  <h1>My Favorites</h1>
+
+  <% if (typeof success_message !== 'undefined' && success_message) { %>
+    <p class="notice success" role="status"><%= success_message %></p>
+  <% } %>
+  <% if (typeof error_message !== 'undefined' && error_message) { %>
+    <p class="notice error" role="status"><%= error_message %></p>
+  <% } %>
+
+  <% if (!items || items.length === 0) { %>
+    <p class="muted">You haven’t saved any vehicles yet.</p>
+    <p><a class="pill" href="/inventory">Browse inventory</a></p>
+  <% } else { %>
+    <p class="muted"><%= items.length %> favorite<%= items.length === 1 ? '' : 's' %></p>
+
+    <ul class="card-grid">
+      <% items.forEach((it) => { %>
+        <li class="card">
+          <a class="thumb" href="/inventory/detail/<%= it.inv_id %>">
+            <img
+              src="<%= it.inv_image %>"
+              alt="Photo of <%= it.inv_year %> <%= it.inv_make %> <%= it.inv_model %>">
+          </a>
+
+          <div class="card-body">
+            <h3 class="card-title">
+              <a href="/inventory/detail/<%= it.inv_id %>">
+                <%= it.inv_year %> <%= it.inv_make %> <%= it.inv_model %>
+              </a>
+            </h3>
+
+            <% if (it.inv_price) { %>
+              <p class="price">$<%= Number(it.inv_price).toLocaleString() %></p>
+            <% } %>
+
+            <form method="post" action="/account/favorites/remove/<%= it.inv_id %>">
+              <button class="btn" type="submit">Remove</button>
+            </form>
+          </div>
+        </li>
+      <% }); %>
+    </ul>
+  <% } %>
+</main>
+
+<style>
+  /* tiny, optional helpers so it looks decent without new CSS files
+  .card-grid { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill,minmax(240px,1fr)); gap: 1rem; }
+  .card { border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; background: #fff; display: flex; flex-direction: column; }
+  .thumb img { width: 100%; height: 160px; object-fit: cover; display: block; }
+  .card-body { padding: .75rem 1rem 1rem; display: grid; gap: .5rem; }
+  .card-title { margin: 0; font-size: 1.05rem; }
+  .price { margin: 0; font-weight: 600; }
+  .muted { color: #6b7280; }*/
+</style>

@@ -1,17 +1,17 @@
 /* eslint-env node */
 const { Router } = require("express");
-const { upsertValidators, listView, addAction, removeAction } =
-require("../controllers/favoritescontroller");
+const { listView, add, remove } = require("../controllers/favoritescontroller");
+// If you add validators later, import and insert them where noted.
 
 const router = Router();
 
-// /account/favorites (list)
+// GET /account/favorites
 router.get("/favorites", listView);
 
-// /account/favorites/add
-router.post("/favorites/add", upsertValidators, addAction);
+// POST /account/favorites/add/:inv_id
+router.post("/favorites/add/:inv_id", /* upsertValidators, */ add);
 
-// /account/favorites/remove
-router.post("/favorites/remove", upsertValidators, removeAction);
+// POST /account/favorites/remove/:inv_id
+router.post("/favorites/remove/:inv_id", /* upsertValidators, */ remove);
 
 module.exports = router;
