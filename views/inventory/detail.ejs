@@ -11,6 +11,22 @@
     <!-- Vehicle Details -->
     <section>
       <h2><%= vehicle.inv_year %> <%= vehicle.inv_make %> <%= vehicle.inv_model %></h2>
+
+     <% if (user) { %>
+        <form method="post"
+              action="<%= isFav
+                        ? ('/account/favorites/remove/' + vehicle.inv_id)
+                        : ('/account/favorites/add/' + vehicle.inv_id) %>">
+          <button class="btn" type="submit">
+            <%= isFav ? 'Remove from Favorites' : 'Add to Favorites' %>
+          </button>
+        </form>
+      <% } else { %>
+        <p class="muted">
+          <a href="/auth/login">Log in</a> to save this vehicle.
+        </p>
+      <% } %>
+      
       <p><strong>Price:</strong> $<%= Number(vehicle.inv_price).toLocaleString() %></p>
       <p><strong>Mileage:</strong> <%= Number(vehicle.inv_miles).toLocaleString() %> miles</p>
       <p><strong>Color:</strong> <%= vehicle.inv_color %></p>

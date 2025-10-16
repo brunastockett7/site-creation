@@ -1,5 +1,6 @@
 const invModel = require("../models/inventory-model")
 const utilities = require("../../utilities")
+const favModel = require("../models/favoritesmodel")
 
 /* ===============================
  *  Public: Hub (all vehicles)
@@ -38,17 +39,30 @@ async function listByClassification(req, res, next) {
  * =========================== */
 async function buildById(req, res, next) {
   try {
-    const { inv_id } = req.params
-    const vehicle = await invModel.getVehicleById(Number(inv_id))
+    const { inv_id } = req.params;
+    const vehicle = await invModel.getVehicleById(Number(inv_id));
     if (!vehicle) {
-      return res.status(404).render("error", { status: 404, message: "Vehicle not found" })
+      return res.status(404).render("error", { status: 404, message: "Vehicle not found" });
     }
 
-    res.render("inventory/detail", {
+    // ✅ favorites flag for the view
+    let isFav = false;
+    if (res.locals.user) {
+      try {
+        isFav = await favModel.isFavorite(res.locals.user.id, vehicle.inv_id);
+      } catch (_) {
+        // ignore favorites lookup errors to avoid breaking the detail page
+      }
+    }
+
+    return res.render("inventory/detail", {
       title: `${vehicle.inv_year} ${vehicle.inv_make} ${vehicle.inv_model}`,
-      vehicle  // pass the object directly to the view
-    })
-  } catch (e) { next(e) }
+      vehicle,
+      isFav
+    });
+  } catch (e) {
+    return next(e);
+  }
 }
 
 

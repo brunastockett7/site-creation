@@ -12,19 +12,19 @@
       <% if (typeof user !== 'undefined' && user) { %>
         <a class="pill" href="/account/manage">Account</a>
         <a class="pill" href="/account/update">Update</a>
+        <a class="pill" href="/account/favorites">Favorites</a> <!-- ← add this line -->
 
-        <!-- ✅ Optional role example -->
-        <% if (user.role === 'Admin' || user.role === 'Employee') { %>
-          <a class="pill" href="#" aria-disabled="true">Admin</a>
-        <% } %>
-
-        <!-- ✅ Logout form -->
+      <!-- ✅ Logout form -->
         <form action="/auth/logout" method="post" style="display:inline">
-          <button class="pill" type="submit">Logout</button>
+        <button class="pill" type="submit">Logout</button>
         </form>
       <% } else { %>
-        <!-- ✅ Show login when not authenticated -->
         <a class="pill" href="/auth/login">Login</a>
+      <% } %>
+
+       <!-- Optional role example (null-safe) -->
+      <% if (user && (user.role === 'Admin' || user.role === 'Employee')) { %>
+        <a class="pill" href="/inventory/management">Admin</a>
       <% } %>
     </nav>
   </div>

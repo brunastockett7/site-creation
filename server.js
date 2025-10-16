@@ -111,6 +111,7 @@ const invcontroller = require("./src/controllers/invcontroller");
 const inventoryroute = require("./src/routes/inventoryroute");
 const authRoutes = require("./src/routes/authroutes");
 const accountRoutes = require("./src/routes/accountroutes");
+const favoritesRoutes = require("./src/routes/favoritesroutes");
 
 app.get("/", basecontroller.buildHome);
 
@@ -123,6 +124,7 @@ app.use("/auth", authRoutes);
 
 // ✅ Protect everything under /account/*
 app.use("/account", requireAuth, accountRoutes);
+app.use("/account", requireAuth, favoritesRoutes);
 
 /* -------- Public Pages -------- */
 app.get("/finance", (_req, res) => {
