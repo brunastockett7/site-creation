@@ -16,22 +16,15 @@
 
     <ul class="card-grid">
       <% items.forEach((it) => { %>
+        <%
+          // Choose a filename from DB (prefer thumbnail), normalize to /images/<file>
+          const raw = String(it.inv_thumbnail || it.inv_image || "");
+          const fileOnly = raw.replace(/^\/?images\//, ""); // remove leading /images/ if present
+          const imgUrl = fileOnly ? `/images/${fileOnly}` : "/images/hero.webp"; // fallback image
+        %>
+
         <li class="card">
           <a class="thumb" href="/inventory/detail/<%= it.inv_id %>">
-            <%
-              // ---- Image path normalization ----
-              // Accept either:
-              //   - just the filename (e.g., "audi-a5-2025.webp")
-              //   - "images/filename.webp"
-              //   - "/images/filename.webp"
-              //   - a full URL (http/https)
-              const raw = String(it.inv_image || "");
-              const isAbs = /^https?:\/\//i.test(raw);
-              const fileOnly = raw.replace(/^\/?images\//, "");
-              const imgUrl = isAbs
-                ? raw
-                : (fileOnly ? `/images/${fileOnly}` : "/images/hero.webp");
-            %>
             <img
               src="<%= imgUrl %>"
               alt="Photo of <%= it.inv_year %> <%= it.inv_make %> <%= it.inv_model %>"
