@@ -1,7 +1,7 @@
 /* eslint-env node */
 const { Router } = require("express");
 // path is from src/routes -> src/controllers (one levelup)
-const fav = require("../controllers/favoritesntroller");
+const fav = require("../controllers/favoritescontroller");
 
 console.log("favoritescontroller key:", Object.keys(fav));
 
