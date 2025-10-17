@@ -19,9 +19,9 @@
         <li class="card">
           <a class="thumb" href="/inventory/detail/<%= it.inv_id %>">
             <img
-              src="<%= it.inv_image %>"
-              alt="Photo of <%= it.inv_year %> <%= it.inv_make %> <%= it.inv_model %>">
-          </a>
+              src="/images/<%= it.inv_image %>"
+              alt="Photo of <%= it.inv_year %> <%= it.inv_make %> <%= it.inv_model %>"
+            >
 
           <div class="card-body">
             <h3 class="card-title">
@@ -34,9 +34,10 @@
               <p class="price">$<%= Number(it.inv_price).toLocaleString() %></p>
             <% } %>
 
-            <form method="post" action="/account/favorites/remove/<%= it.inv_id %>">
-              <button class="btn" type="submit">Remove</button>
-            </form>
+          <form method="post" action="/account/favorites/remove">
+            <input type="hidden" name="inv_id" value="<%= it.inv_id %>">
+            <button class="btn" type="submit">Remove</button>
+          </form>
           </div>
         </li>
       <% }); %>
