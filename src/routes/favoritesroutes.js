@@ -11,7 +11,7 @@ const router = Router();
 router.get("/favorites", fav.listView);
 
 // Add/ Remove (Spread the validator array)
-router.post("/favorites/add", ...fav.upsertValidators, fav.addAction);
-router.post("/favorites/remove", ...fav.upsertValidators, fav.removeAction);
+router.post("/favorites/add", upsertValidators, addAction);
+router.post("/favorites/remove", upsertValidators, removeAction);
 
 module.exports = router;
