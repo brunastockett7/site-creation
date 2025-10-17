@@ -1,7 +1,7 @@
 /* eslint-env node */
 const { query } = require("../db");
 
-// Add a favorite (ignores duplicates gracefully)
+// Add a favorite (keeps your current code)
 async function addFavorite({ accountId, invId }) {
   const text = `
     INSERT INTO favorites (account_id, inv_id)
@@ -12,6 +12,35 @@ async function addFavorite({ accountId, invId }) {
   const { rows } = await query(text, [accountId, invId]);
   return rows[0] || null;
 }
+
+async function removeFavorite({ accountId, invId }) {
+  const text = `DELETE FROM favorites WHERE account_id = $1 AND inv_id = $2`;
+  const { rowCount } = await query(text, [accountId, invId]);
+  return rowCount > 0;
+}
+
+// ✅ Return BOTH thumbnail and image
+async function listFavorites(accountId) {
+  const text = `
+    SELECT
+      f.inv_id,
+      f.created_at,
+      i.inv_make,
+      i.inv_model,
+      i.inv_year,
+      i.inv_price,
+      i.inv_thumbnail,
+      i.inv_image         -- <== add this
+    FROM favorites f
+    JOIN inventory i ON i.inv_id = f.inv_id
+    WHERE f.account_id = $1
+    ORDER BY f.created_at DESC
+  `;
+  const { rows } = await query(text, [accountId]);
+  return rows;
+}
+
+module.exports = { addFavorite, removeFavorite, listFavorites };
 
 // Remove a favorite
 async function removeFavorite({ accountId, invId }) {
