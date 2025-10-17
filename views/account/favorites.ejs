@@ -18,7 +18,10 @@
       <% items.forEach((it) => { %>
         <li class="card">
           <a class="thumb" href="/inventory/detail/<%= it.inv_id %>">
-             <img src="<%= vehicle.inv_image %>" alt="Photo of <%= vehicle.inv_year %> <%= vehicle.inv_make %> <%= vehicle.inv_model %>">
+            <img
+              src="/images/<%= it.inv_image %>"
+              alt="Photo of <%= it.inv_year %> <%= it.inv_make %> <%= it.inv_model %>"
+            >
 
           <div class="card-body">
             <h3 class="card-title">
