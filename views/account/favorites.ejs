@@ -18,10 +18,26 @@
       <% items.forEach((it) => { %>
         <li class="card">
           <a class="thumb" href="/inventory/detail/<%= it.inv_id %>">
+            <%
+              // ---- Image path normalization ----
+              // Accept either:
+              //   - just the filename (e.g., "audi-a5-2025.webp")
+              //   - "images/filename.webp"
+              //   - "/images/filename.webp"
+              //   - a full URL (http/https)
+              const raw = String(it.inv_image || "");
+              const isAbs = /^https?:\/\//i.test(raw);
+              const fileOnly = raw.replace(/^\/?images\//, "");
+              const imgUrl = isAbs
+                ? raw
+                : (fileOnly ? `/images/${fileOnly}` : "/images/hero.webp");
+            %>
             <img
-              src="/images/<%= it.inv_image %>"
+              src="<%= imgUrl %>"
               alt="Photo of <%= it.inv_year %> <%= it.inv_make %> <%= it.inv_model %>"
+              loading="lazy"
             >
+          </a>
 
           <div class="card-body">
             <h3 class="card-title">
@@ -34,10 +50,10 @@
               <p class="price">$<%= Number(it.inv_price).toLocaleString() %></p>
             <% } %>
 
-          <form method="post" action="/account/favorites/remove">
-            <input type="hidden" name="inv_id" value="<%= it.inv_id %>">
-            <button class="btn" type="submit">Remove</button>
-          </form>
+            <form method="post" action="/account/favorites/remove">
+              <input type="hidden" name="inv_id" value="<%= it.inv_id %>">
+              <button class="btn" type="submit">Remove</button>
+            </form>
           </div>
         </li>
       <% }); %>
