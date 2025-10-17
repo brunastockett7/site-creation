@@ -63,6 +63,7 @@ true, sameSite: "lax" });
     res.cookie("err", "Could not remove vehicle. Please try again.", {
 maxAge: 5000, httpOnly: true, sameSite: "lax" });
     return res.redirect(backTo);
+    
   }
 }
 
